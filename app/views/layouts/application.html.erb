@@ -11,28 +11,42 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <!-- フラッシュメッセージ表示 -->
-    <div class="container mx-auto mt-6 px-5">
-      <% flash.each do |key, message| %>
-        <div class="mb-4 p-4 rounded 
-                    <%= key == "notice" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800" %>">
-          <%= message %>
+  <body class="bg-gray-50 text-gray-800">
+    <header class="bg-blue-600 text-white shadow">
+      <div class="container mx-auto flex justify-between items-center px-4 h-16">
+        <!-- 左側：アプリ名 -->
+        <div>
+          <%= link_to "Vocalog", root_path, class: "text-xl font-bold hover:underline" %>
         </div>
-      <% end %>
+
+        <!-- 右側：ログイン／新規登録 or ユーザー情報 -->
+        <div class="flex items-center gap-4">
+          <% if user_signed_in? %>
+            <span class="text-sm">こんにちは、<%= current_user.email %> さん</span>
+            <%= link_to "ログアウト", destroy_user_session_path, method: :delete,
+                class: "bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition" %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path,
+                class: "hover:underline text-sm" %>
+            <%= link_to "新規登録", new_user_registration_path,
+                class: "bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <div class="absolute top-16 left-0 w-full z-50">
+      <div class="container mx-auto px-4">
+        <% flash.each do |key, message| %>
+          <div class="mb-4 p-4 rounded shadow text-sm font-medium max-w-xl mx-auto
+                      <%= key == "notice" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+            <%= message %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
-    <div class="flex justify-end gap-4 p-4">
-      <% if user_signed_in? %>
-        <p class="text-sm text-gray-700">こんにちは、<%= current_user.email %> さん</p>
-        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "text-blue-600 underline" %>
-      <% else %>
-        <%= link_to 'ログイン', new_user_session_path, class: "text-blue-600 underline" %>
-        <%= link_to '新規登録', new_user_registration_path, class: "text-blue-600 underline ml-4" %>
-      <% end %>
-    </div>
-
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main class="container mx-auto px-4 mt-6">
       <%= yield %>
     </main>
   </body>
