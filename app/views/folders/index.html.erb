@@ -1,10 +1,23 @@
-<!-- app/views/folders/index.html.erb -->
-<h2 class="text-xl font-bold mb-4">あなたのフォルダ一覧</h2>
+<div class="max-w-2xl mx-auto bg-white shadow rounded p-6">
+  <h2 class="text-xl font-bold mb-6 text-center">フォルダ一覧</h2>
 
-<ul class="space-y-2">
-  <% @folders.each do |folder| %>
-    <li class="p-3 border rounded shadow-sm bg-white">
-      <%= folder.name %>
-    </li>
+  <div class="mb-4 text-right">
+    <%= link_to "新しいフォルダを作成", new_folder_path, class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+  </div>
+
+  <% if @folders.any? %>
+    <ul class="space-y-2">
+      <% @folders.each do |folder| %>
+        <li class="flex justify-between items-center border-b pb-2">
+          <span class="text-gray-800"><%= folder.name %></span>
+          <div class="flex gap-2">
+            <%= link_to "編集", edit_folder_path(folder), class: "text-blue-600 text-sm hover:underline" %>
+            <%= link_to "削除", folder_path(folder), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-red-600 text-sm hover:underline" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-600 text-sm">フォルダがまだありません。</p>
   <% end %>
-</ul>
+</div>

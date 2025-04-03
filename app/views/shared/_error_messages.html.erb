@@ -1,0 +1,10 @@
+<% if resource.errors.any? %>
+  <div class="mb-4 rounded border border-red-300 bg-red-50 p-4 text-red-700 text-sm">
+    <p class="font-semibold">エラーが発生しました：</p>
+    <ul class="mt-2 list-disc pl-5">
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

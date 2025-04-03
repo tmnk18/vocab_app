@@ -1,0 +1,16 @@
+<div class="max-w-md mx-auto bg-white shadow rounded p-6">
+  <h2 class="text-xl font-bold mb-6 text-center">フォルダ名を編集</h2>
+
+  <%= form_with model: @folder, local: true do |f| %>
+    <%= render "shared/error_messages", resource: @folder %>
+
+    <div class="mb-4">
+      <%= f.label :name, "フォルダ名", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :name, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+    </div>
+
+    <div class="text-center">
+      <%= f.submit "更新する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :folders, only: [:index]
+  resources :folders, only: [:index, :new, :create, :edit, :update, :destroy]
   get 'folders/index'
 
   namespace :users do
