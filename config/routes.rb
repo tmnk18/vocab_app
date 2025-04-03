@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :folders, only: [:index]
+  get 'folders/index'
+
   namespace :users do
     resource :settings, only: [:show]
   end

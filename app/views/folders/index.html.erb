@@ -1,0 +1,10 @@
+<!-- app/views/folders/index.html.erb -->
+<h2 class="text-xl font-bold mb-4">あなたのフォルダ一覧</h2>
+
+<ul class="space-y-2">
+  <% @folders.each do |folder| %>
+    <li class="p-3 border rounded shadow-sm bg-white">
+      <%= folder.name %>
+    </li>
+  <% end %>
+</ul>
