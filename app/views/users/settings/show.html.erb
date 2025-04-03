@@ -1,0 +1,123 @@
+<div class="max-w-2xl mx-auto bg-white shadow rounded p-6">
+  <h2 class="text-xl font-bold mb-6 text-center">アカウント設定</h2>
+
+  <!-- タブ切り替えボタン -->
+  <div class="flex justify-center gap-4 mb-6">
+    <%= link_to "アカウント", users_settings_path(tab: "account"),
+        class: "px-4 py-2 rounded border text-sm font-medium #{params[:tab] == 'profile' ? 'bg-white text-blue-600 border-blue-600' : 'bg-blue-600 text-white'}" %>
+
+    <%= link_to "プロフィール", users_settings_path(tab: "profile"),
+        class: "px-4 py-2 rounded border text-sm font-medium #{params[:tab] == 'profile' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-blue-600'}" %>
+  </div>
+
+    <!-- コンテンツ切り替え -->
+  <% if params[:tab] == "profile" %>
+    <% if params[:edit] == "profile" %>
+      <!-- 編集フォーム -->
+      <%= form_with(model: current_user, url: users_update_profile_path, method: :patch, local: true, html: { multipart: true, class: "space-y-6" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: current_user %>
+        <div>
+          <p class="text-sm text-gray-600 mb-1">現在のプロフィール画像</p>
+          <% begin %>
+            <% if current_user.avatar.attached? %>
+              <%= image_tag url_for(current_user.avatar), class: "w-24 h-24 rounded-full object-cover border" %>
+            <% else %>
+              <%= image_tag "default_avatar.png", class: "w-24 h-24 rounded-full object-cover border" %>
+            <% end %>
+          <% rescue ArgumentError %>
+            <%= image_tag "default_avatar.png", class: "w-24 h-24 rounded-full object-cover border" %>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :avatar, "画像アップロード", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.file_field :avatar, class: "mt-1" %>
+        </div>
+
+        <div>
+          <%= f.label :username, "ユーザー名", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :username, value: current_user.username, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+        </div>
+
+        <div class="pt-4">
+          <%= f.submit "更新する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        </div>
+      <% end %>
+
+    <% else %>
+      <!-- 表示モード -->
+      <div class="space-y-6">
+        <div>
+          <p class="text-sm text-gray-600 mb-1">プロフィール画像</p>
+          <% if current_user.avatar.attached? %>
+            <%= image_tag url_for(current_user.avatar), class: "w-24 h-24 rounded-full object-cover border" %>
+          <% else %>
+            <%= image_tag "default_avatar.png", class: "w-24 h-24 rounded-full object-cover border" %>
+          <% end %>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600">ユーザー名</p>
+          <p class="font-medium text-gray-800"><%= current_user.username.presence || "ユーザー" %></p>
+        </div>
+
+        <div class="pt-4">
+          <%= link_to "編集", users_settings_path(tab: "profile", edit: "profile"),
+              class: "text-sm text-blue-600 hover:underline" %>
+        </div>
+      </div>
+    <% end %>
+
+
+
+  <% else %>
+
+    <% if params[:edit] == "account" %>
+      <!-- 編集フォーム -->
+      <%= form_with(model: current_user, url: users_update_account_path, method: :patch, local: true, html: { class: "space-y-4" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: current_user %>
+        <div>
+          <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.email_field :email, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+        </div>
+
+        <div>
+          <%= f.label :password, "変更後パスワード（変更する場合のみ）", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+        </div>
+
+        <div>
+          <%= f.label :password_confirmation, "確認用パスワード（変更する場合のみ）", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+        </div>
+
+        <div>
+          <%= f.label :current_password, "現在のパスワード（必須）", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.password_field :current_password, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+        </div>
+
+        <div class="pt-4">
+          <%= f.submit "更新する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        </div>
+      <% end %>
+
+    <% else %>
+      <!-- 表示モード -->
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-600">メールアドレス</p>
+          <p class="font-medium"><%= current_user.email %></p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600">パスワード</p>
+          <p class="font-medium text-gray-500">●●●●●（非表示）</p>
+        </div>
+
+        <div class="pt-4">
+          <%= link_to "編集", users_settings_path(tab: "account", edit: "account"), class: "text-sm text-blue-600 hover:underline" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -23,6 +23,8 @@
         <div class="flex items-center gap-4">
           <% if user_signed_in? %>
             <span class="text-sm">こんにちは、<%= current_user.username.presence || "ユーザー" %> さん</span>
+            <%= link_to "アカウント設定", users_settings_path,
+                class: "bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition" %>
             <%= link_to "ログアウト", destroy_user_session_path, method: :delete,
                 class: "bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition" %>
           <% else %>
