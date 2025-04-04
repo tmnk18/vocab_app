@@ -1,0 +1,28 @@
+<h2 class="text-xl font-bold mb-4">「<%= @folder.name %>」単語帳一覧</h2>
+
+<div class="mb-4 text-right">
+  <%= link_to "新しい単語帳を作成", new_folder_wordbook_path(@folder),
+              class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+</div>
+
+<% if @wordbooks.any? %>
+  <ul class="space-y-2">
+    <% @wordbooks.each do |wordbook| %>
+      <li class="p-4 bg-white rounded shadow">
+        <p class="font-semibold text-lg"><%= wordbook.title %></p>
+        <p class="text-sm text-gray-600 mb-2"><%= wordbook.description.presence || "（説明なし）" %></p>
+
+        <!-- 編集・削除ボタン -->
+        <div class="flex gap-3 text-sm">
+          <%= link_to "編集", edit_folder_wordbook_path(@folder, wordbook), class: "text-blue-600 hover:underline" %>
+          <%= link_to "削除", folder_wordbook_path(@folder, wordbook),
+                      method: :delete,
+                      data: { confirm: "本当に削除しますか？" },
+                      class: "text-red-600 hover:underline" %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>このフォルダにはまだ単語帳がありません。</p>
+<% end %>

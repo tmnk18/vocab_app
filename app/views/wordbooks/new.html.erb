@@ -1,0 +1,25 @@
+<!-- app/views/wordbooks/new.html.erb -->
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+  <h2 class="text-xl font-bold mb-4 text-center">単語帳を作成</h2>
+
+  <%= form_with model: [@folder, @wordbook], local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :title, "タイトル", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :title, class: "w-full border rounded px-3 py-2 mt-1" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :description, "説明（任意）", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :description, rows: 4, class: "w-full border rounded px-3 py-2 mt-1" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.check_box :is_public, class: "mr-2" %>
+      <%= f.label :is_public, "公開する", class: "text-sm text-gray-700" %>
+    </div>
+
+    <div class="text-center">
+      <%= f.submit "作成する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    </div>
+  <% end %>
+</div>
