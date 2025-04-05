@@ -1,4 +1,22 @@
-<div>
-  <h1 class="font-bold text-4xl">WordEntries#edit</h1>
-  <p>Find me in app/views/word_entries/edit.html.erb</p>
-</div>
+<h2 class="text-xl font-bold mb-4">単語を編集</h2>
+
+<%= render "shared/error_messages", resource: @word_entry %>
+
+<%= form_with model: [@folder, @wordbook, @word_entry], local: true do |f| %>
+  <div class="mb-4">
+    <%= f.label :word, "単語", class: "block mb-1 text-sm font-medium" %>
+    <%= f.text_field :word, class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :meaning, "意味", class: "block mb-1 text-sm font-medium" %>
+    <%= f.text_field :meaning, class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :example_sentence, "例文", class: "block mb-1 text-sm font-medium" %>
+    <%= f.text_area :example_sentence, class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <%= f.submit "更新する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
