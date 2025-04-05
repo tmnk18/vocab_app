@@ -15,7 +15,6 @@
 </div>
 
 <% if @word_entries.any? %>
-  <!-- 編集アクションボタン：初期は非表示 -->
   <div id="edit-actions" class="mb-4 hidden flex gap-2">
     <button class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">移動</button>
     <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">削除</button>
@@ -23,26 +22,48 @@
 
   <ul class="space-y-2">
     <% @word_entries.each do |entry| %>
-      <li class="flex justify-between items-center p-4 bg-white rounded shadow hover:bg-gray-50">
-        <div class="flex items-center gap-2">
-          <!-- チェックボックス：初期は非表示 -->
-          <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
-          <span class="font-semibold text-gray-800"><%= entry.word %></span>
-        </div>
-        <span class="text-sm text-gray-600"><%= entry.meaning %></span>
-      </li>
+      <%= link_to folder_wordbook_word_entry_path(@folder, @wordbook, entry), class: "block" do %>
+        <li class="flex p-4 bg-white rounded shadow hover:bg-gray-50">
+          <!-- チェックボックス部分 -->
+          <div class="w-1/12 flex items-center justify-center">
+            <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
+          </div>
+
+          <!-- 単語部分 -->
+          <div class="w-5/12 flex items-center">
+            <span class="font-semibold text-gray-800"><%= entry.word %></span>
+          </div>
+
+          <!-- 意味部分 -->
+          <div class="w-6/12 flex items-center">
+            <span class="text-sm text-gray-600"><%= entry.meaning %></span>
+          </div>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 <% else %>
   <p>この単語帳にはまだ単語が登録されていません。</p>
 <% end %>
 
-<!-- jQuery スクリプト -->
 <script>
-  $(document).ready(function() {
-    $('#edit-mode-toggle').on('click', function() {
-      $('.entry-checkbox').toggleClass('hidden');
-      $('#edit-actions').toggleClass('hidden');
+  $(document).ready(function () {
+    let editing = false;
+
+    $('#edit-mode-toggle').on('click', function () {
+      editing = !editing;
+
+      if (editing) {
+        $('.entry-checkbox').removeClass('hidden');
+        $('.entry-link').addClass('pointer-events-none'); // リンク無効化
+        $('#edit-actions').removeClass('hidden');
+        $(this).text('完了'); // ボタンの表示を「完了」に
+      } else {
+        $('.entry-checkbox').addClass('hidden');
+        $('.entry-link').removeClass('pointer-events-none');
+        $('#edit-actions').addClass('hidden');
+        $(this).text('編集'); // ボタンの表示を「編集」に戻す
+      }
     });
   });
 </script>
