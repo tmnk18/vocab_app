@@ -1,0 +1,48 @@
+<%= javascript_include_tag "https://code.jquery.com/jquery-3.6.0.min.js" %>
+
+<div class="mb-4 flex justify-between items-center">
+  <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder),
+              class: "text-sm text-blue-600 hover:underline" %>
+
+  <button id="edit-mode-toggle" class="text-sm text-gray-600 hover:underline">編集</button>
+</div>
+
+<h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」の単語一覧</h2>
+
+<div class="mb-4 text-right">
+  <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
+              class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+</div>
+
+<% if @word_entries.any? %>
+  <!-- 編集アクションボタン：初期は非表示 -->
+  <div id="edit-actions" class="mb-4 hidden flex gap-2">
+    <button class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">移動</button>
+    <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">削除</button>
+  </div>
+
+  <ul class="space-y-2">
+    <% @word_entries.each do |entry| %>
+      <li class="flex justify-between items-center p-4 bg-white rounded shadow hover:bg-gray-50">
+        <div class="flex items-center gap-2">
+          <!-- チェックボックス：初期は非表示 -->
+          <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
+          <span class="font-semibold text-gray-800"><%= entry.word %></span>
+        </div>
+        <span class="text-sm text-gray-600"><%= entry.meaning %></span>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>この単語帳にはまだ単語が登録されていません。</p>
+<% end %>
+
+<!-- jQuery スクリプト -->
+<script>
+  $(document).ready(function() {
+    $('#edit-mode-toggle').on('click', function() {
+      $('.entry-checkbox').toggleClass('hidden');
+      $('#edit-actions').toggleClass('hidden');
+    });
+  });
+</script>

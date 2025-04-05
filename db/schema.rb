@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_03_133743) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_04_135641) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -60,6 +60,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_03_133743) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "word_entries", force: :cascade do |t|
+    t.string "word"
+    t.text "meaning"
+    t.text "example_sentence"
+    t.integer "wordbook_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["wordbook_id"], name: "index_word_entries_on_wordbook_id"
+  end
+
   create_table "wordbooks", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -73,5 +83,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_03_133743) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "folders", "users"
+  add_foreign_key "word_entries", "wordbooks"
   add_foreign_key "wordbooks", "folders"
 end

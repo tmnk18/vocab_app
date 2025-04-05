@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
+  get 'word_entries/index'
+  get 'word_entries/new'
+  get 'word_entries/edit'
   resources :folders do
-    resources :wordbooks
+    resources :wordbooks do
+      resources :word_entries
+    end
   end
 
   namespace :users do

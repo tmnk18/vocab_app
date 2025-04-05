@@ -1,0 +1,29 @@
+<div class="mb-4">
+  <%= link_to "← 単語一覧に戻る", folder_wordbook_word_entries_path(@folder, @wordbook),
+              class: "text-sm text-blue-600 hover:underline" %>
+</div>
+
+<h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」に単語を追加</h2>
+
+<%= form_with model: [@folder, @wordbook, @word_entry], local: true do |f| %>
+  <%= render "shared/error_messages", resource: @word_entry %>
+
+  <div class="mb-4">
+    <%= f.label :word, "単語", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_field :word, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :meaning, "意味", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_field :meaning, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :example_sentence, "例文（任意）", class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_area :example_sentence, rows: 3, class: "w-full mt-1 border border-gray-300 rounded px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.submit "登録する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
+<% end %>
