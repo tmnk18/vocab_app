@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         collection do
           get :move  # 移動先選択ページ表示
           patch :move_entries  # 移動処理
+          delete :delete_entries # 削除処理 
         end
       end
     end

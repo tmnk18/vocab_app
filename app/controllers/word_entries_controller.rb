@@ -37,6 +37,20 @@ class WordEntriesController < ApplicationController
                 notice: "#{entry_ids.count}件の単語を移動しました"
   end
 
+  def delete_entries
+    entry_ids = params[:entry_ids]
+  
+    if entry_ids.present?
+      WordEntry.where(id: entry_ids).destroy_all
+      render json: {
+        redirect_url: folder_wordbook_word_entries_path(@folder, @wordbook),
+        notice: "#{entry_ids.count}件の単語を削除しました"
+      }
+    else
+      render json: { error: "削除する単語を選択してください" }, status: :unprocessable_entity
+    end
+  end
+  
   private
 
   def set_folder_and_wordbook

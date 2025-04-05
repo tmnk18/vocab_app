@@ -4,6 +4,17 @@ import $ from "jquery"
 import Rails from "@rails/ujs"
 Rails.start()
 
+$(document).on('turbo:load', function () {
+  const token = $('meta[name="csrf-token"]').attr('content');
+  if (token) {
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-Token': token
+      }
+    });
+  }
+});
+
 document.addEventListener("turbo:load", function () {
   let editing = false;
 
@@ -56,6 +67,39 @@ document.addEventListener("turbo:load", function () {
     const query = $.param({ entry_ids: selectedIds });
     const moveUrl = $("#move-button").data("move-url") + "?" + query;
     window.location.href = moveUrl;
+  });
+
+  $('#delete-button').off().on('click', function () {
+    const selectedIds = $('.entry-checkbox:checked').map(function () {
+      return $(this).data('entry-id');
+    }).get();
+  
+    if (selectedIds.length === 0) {
+      alert('削除する単語を選択してください');
+      return;
+    }
+  
+    if (!confirm('本当に削除しますか？')) return;
+  
+    const deleteUrl = $(this).data('delete-url');
+  
+    $.ajax({
+      url: deleteUrl,
+      type: 'DELETE',
+      data: { entry_ids: selectedIds },
+      success: function (response) {
+        const url = new URL(response.redirect_url, window.location.origin);
+        url.searchParams.set("notice", response.notice);
+        window.location.href = url.toString();  // フラッシュメッセージ付きでリダイレクト
+      },
+      error: function (xhr) {
+        if (xhr.responseJSON?.error) {
+          alert(xhr.responseJSON.error);
+        } else {
+          alert('削除に失敗しました');
+        }
+      }
+    });
   });
 });
 

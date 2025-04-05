@@ -19,7 +19,11 @@
             data-move-url="<%= move_folder_wordbook_word_entries_path(@folder, @wordbook) %>">
       移動
     </button>
-    <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">削除</button>
+    <button id="delete-button"
+            data-delete-url="<%= delete_entries_folder_wordbook_word_entries_path(@folder, @wordbook) %>"
+            class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+      削除
+    </button>
   </div>
 
   <ul class="space-y-2">
