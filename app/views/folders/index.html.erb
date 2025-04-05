@@ -1,18 +1,30 @@
-<div class="max-w-2xl mx-auto bg-white shadow rounded p-6">
+<div class="max-w-2xl mx-auto">
   <h2 class="text-xl font-bold mb-6 text-center">フォルダ一覧</h2>
 
   <div class="mb-4 text-right">
-    <%= link_to "新しいフォルダを作成", new_folder_path, class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+    <%= link_to "新しいフォルダを作成", new_folder_path,
+                class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
   </div>
 
   <% if @folders.any? %>
     <ul class="space-y-2">
       <% @folders.each do |folder| %>
-        <li class="flex justify-between items-center border-b pb-2">
-          <span class="text-gray-800"><%= folder.name %></span>
+        <li class="bg-white rounded shadow p-4 flex justify-between items-center">
+          <!-- 左：アイコン＋フォルダ名（リンク） -->
+          <div class="flex items-center gap-2">
+            <span class="text-xl">📁</span>
+            <%= link_to folder.name, folder_wordbooks_path(folder),
+                        class: "text-lg font-semibold text-gray-800 hover:underline" %>
+          </div>
+
+          <!-- 右：編集・削除 -->
           <div class="flex gap-2">
-            <%= link_to "編集", edit_folder_path(folder), class: "text-blue-600 text-sm hover:underline" %>
-            <%= link_to "削除", folder_path(folder), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-red-600 text-sm hover:underline" %>
+            <%= link_to "編集", edit_folder_path(folder),
+                        class: "text-blue-600 text-sm hover:underline" %>
+            <%= link_to "削除", folder_path(folder),
+                        method: :delete,
+                        data: { confirm: "本当に削除しますか？" },
+                        class: "text-red-600 text-sm hover:underline" %>
           </div>
         </li>
       <% end %>
