@@ -33,7 +33,7 @@ class WordEntriesController < ApplicationController
   
     WordEntry.where(id: entry_ids).update_all(wordbook_id: target_wordbook.id)
   
-    redirect_to folder_wordbook_word_entries_path(@folder, target_wordbook),
+    redirect_to folder_wordbook_word_entries_path(@folder, @wordbook),
                 notice: "#{entry_ids.count}件の単語を移動しました"
   end
 

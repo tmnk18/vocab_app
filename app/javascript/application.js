@@ -65,3 +65,17 @@ window.addEventListener("pageshow", function (event) {
     window.location.reload();
   }
 });
+
+document.addEventListener("turbo:load", function () {
+  const flash = document.querySelector(".flash-message");
+  if (flash) {
+    setTimeout(() => {
+      flash.style.transition = "opacity 0.6s ease";
+      flash.style.opacity = "0";
+
+      setTimeout(() => {
+        flash.remove();
+      }, 600);
+    }, 3000);
+  }
+});

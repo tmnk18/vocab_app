@@ -6,7 +6,6 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -37,10 +36,10 @@
       </div>
     </header>
 
-    <div class="absolute top-16 left-0 w-full z-50">
+    <div class="absolute top-16 left-0 w-full z-40">
       <div class="container mx-auto px-4">
         <% flash.each do |key, message| %>
-          <div class="mb-4 p-4 rounded shadow text-sm font-medium max-w-xl mx-auto
+          <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium max-w-xl mx-auto
                       <%= key == "notice" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
             <%= message %>
           </div>
@@ -48,7 +47,7 @@
       </div>
     </div>
 
-    <main class="container mx-auto px-4 mt-6">
+    <main class="container mx-auto px-4 mt-6 pt-8">
       <%= yield %>
     </main>
   </body>
