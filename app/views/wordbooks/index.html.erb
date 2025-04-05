@@ -8,8 +8,12 @@
 <% if @wordbooks.any? %>
   <ul class="space-y-2">
     <% @wordbooks.each do |wordbook| %>
-      <li class="p-4 bg-white rounded shadow">
-        <p class="font-semibold text-lg"><%= wordbook.title %></p>
+      <li class="p-4 bg-white rounded shadow hover:bg-gray-50">
+        <!-- タイトル部分だけリンクにする -->
+        <p class="font-semibold text-lg">
+          <%= link_to wordbook.title, folder_wordbook_word_entries_path(@folder, wordbook),
+                      class: "text-blue-600 hover:underline" %>
+        </p>
         <p class="text-sm text-gray-600 mb-2"><%= wordbook.description.presence || "（説明なし）" %></p>
 
         <!-- 編集・削除ボタン -->

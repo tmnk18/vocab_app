@@ -4,7 +4,6 @@ import $ from "jquery"
 import Rails from "@rails/ujs"
 Rails.start()
 
-// ✅ Turbo対応：ページ読み込み時＆戻った時に毎回動作
 document.addEventListener("turbo:load", function () {
   let editing = false;
 
@@ -41,7 +40,7 @@ document.addEventListener("turbo:load", function () {
   });
 
   $('.entry-checkbox').off().on('click', function (e) {
-    e.stopPropagation(); // ✅ チェックボックスだけクリックしてもリンク飛ばないように
+    e.stopPropagation();
   });
 
   $('#move-button').off().on('click', function () {
