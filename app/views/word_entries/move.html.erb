@@ -1,0 +1,33 @@
+<h2 class="text-xl font-bold mb-6">単語の移動</h2>
+
+<p class="mb-4">以下の単語をどの単語帳に移動しますか？</p>
+
+<ul class="mb-6 space-y-2">
+  <% @word_entries.each do |entry| %>
+    <li class="p-3 bg-white rounded shadow flex justify-between">
+      <span><%= entry.word %></span>
+      <span class="text-sm text-gray-600"><%= entry.meaning %></span>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with url: move_entries_folder_wordbook_word_entries_path(@folder, @wordbook), method: :patch, local: true do %>
+  <% @word_entries.each do |entry| %>
+    <%= hidden_field_tag "entry_ids[]", entry.id %>
+  <% end %>
+
+  <div class="mb-4">
+    <label for="target_wordbook_id" class="block mb-1 text-sm font-medium text-gray-700">移動先の単語帳</label>
+    <%= select_tag :target_wordbook_id,
+        options_from_collection_for_select(@other_wordbooks, :id, :title),
+        prompt: "移動先を選んでください",
+        class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <%= submit_tag "移動する", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
+
+<div class="mt-4">
+  <%= link_to "キャンセルして戻る", folder_wordbook_word_entries_path(@folder, @wordbook),
+              class: "text-sm text-blue-600 hover:underline" %>
+</div>

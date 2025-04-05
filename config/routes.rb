@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get 'word_entries/index'
-  get 'word_entries/new'
-  get 'word_entries/edit'
   resources :folders do
     resources :wordbooks do
-      resources :word_entries
+      resources :word_entries do
+        collection do
+          get :move  # 移動先選択ページ表示
+          patch :move_entries  # 移動処理
+        end
+      end
     end
   end
 

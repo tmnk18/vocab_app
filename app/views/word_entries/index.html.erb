@@ -1,5 +1,3 @@
-<%= javascript_include_tag "https://code.jquery.com/jquery-3.6.0.min.js" %>
-
 <div class="mb-4 flex justify-between items-center">
   <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder),
               class: "text-sm text-blue-600 hover:underline" %>
@@ -16,54 +14,37 @@
 
 <% if @word_entries.any? %>
   <div id="edit-actions" class="mb-4 hidden flex gap-2">
-    <button class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">移動</button>
+    <button id="move-button"
+            class="bg-yellow-500 text-white px-3 py-1 rounded text-sm"
+            data-move-url="<%= move_folder_wordbook_word_entries_path(@folder, @wordbook) %>">
+      移動
+    </button>
     <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">削除</button>
   </div>
 
   <ul class="space-y-2">
     <% @word_entries.each do |entry| %>
-      <%= link_to folder_wordbook_word_entry_path(@folder, @wordbook, entry), class: "block" do %>
-        <li class="flex p-4 bg-white rounded shadow hover:bg-gray-50">
-          <!-- チェックボックス部分 -->
-          <div class="w-1/12 flex items-center justify-center">
-            <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
-          </div>
+      <li class="entry-card flex p-4 bg-white rounded shadow hover:bg-gray-50 cursor-pointer"
+          data-entry-id="<%= entry.id %>"
+          data-url="<%= folder_wordbook_word_entry_path(@folder, @wordbook, entry) %>">
 
-          <!-- 単語部分 -->
-          <div class="w-5/12 flex items-center">
-            <span class="font-semibold text-gray-800"><%= entry.word %></span>
-          </div>
+        <!-- チェックボックス部分 -->
+        <div class="w-1/12 flex items-center justify-center">
+          <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
+        </div>
 
-          <!-- 意味部分 -->
-          <div class="w-6/12 flex items-center">
-            <span class="text-sm text-gray-600"><%= entry.meaning %></span>
-          </div>
-        </li>
-      <% end %>
+        <!-- 単語部分 -->
+        <div class="w-5/12 flex items-center">
+          <span class="font-semibold text-gray-800"><%= entry.word %></span>
+        </div>
+
+        <!-- 意味部分 -->
+        <div class="w-6/12 flex items-center">
+          <span class="text-sm text-gray-600"><%= entry.meaning %></span>
+        </div>
+      </li>
     <% end %>
   </ul>
 <% else %>
   <p>この単語帳にはまだ単語が登録されていません。</p>
 <% end %>
-
-<script>
-  $(document).ready(function () {
-    let editing = false;
-
-    $('#edit-mode-toggle').on('click', function () {
-      editing = !editing;
-
-      if (editing) {
-        $('.entry-checkbox').removeClass('hidden');
-        $('.entry-link').addClass('pointer-events-none'); // リンク無効化
-        $('#edit-actions').removeClass('hidden');
-        $(this).text('完了'); // ボタンの表示を「完了」に
-      } else {
-        $('.entry-checkbox').addClass('hidden');
-        $('.entry-link').removeClass('pointer-events-none');
-        $('#edit-actions').addClass('hidden');
-        $(this).text('編集'); // ボタンの表示を「編集」に戻す
-      }
-    });
-  });
-</script>

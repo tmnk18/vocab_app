@@ -22,6 +22,21 @@ class WordEntriesController < ApplicationController
     end
   end
 
+  def move
+    @word_entries = @wordbook.word_entries.where(id: params[:entry_ids])
+    @other_wordbooks = @folder.wordbooks.where.not(id: @wordbook.id)
+  end
+  
+  def move_entries
+    target_wordbook = Wordbook.find(params[:target_wordbook_id])
+    entry_ids = params[:entry_ids]
+  
+    WordEntry.where(id: entry_ids).update_all(wordbook_id: target_wordbook.id)
+  
+    redirect_to folder_wordbook_word_entries_path(@folder, target_wordbook),
+                notice: "#{entry_ids.count}件の単語を移動しました"
+  end
+
   private
 
   def set_folder_and_wordbook
