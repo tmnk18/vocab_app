@@ -7,7 +7,9 @@
 
 <h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」の単語一覧</h2>
 
-<div class="mb-4 text-right">
+<div class="mb-4 flex justify-end gap-2">
+  <button id="toggle-meaning" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">意味を隠す</button>
+  <button id="toggle-word" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">単語を隠す</button>
   <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
               class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
 </div>
@@ -39,12 +41,12 @@
 
         <!-- 単語部分 -->
         <div class="w-5/12 flex items-center">
-          <span class="font-semibold text-gray-800"><%= entry.word %></span>
+          <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
         </div>
 
         <!-- 意味部分 -->
         <div class="w-6/12 flex items-center">
-          <span class="text-sm text-gray-600"><%= entry.meaning %></span>
+          <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
         </div>
       </li>
     <% end %>

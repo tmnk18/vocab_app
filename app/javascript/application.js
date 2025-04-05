@@ -8,23 +8,24 @@ $(document).on('turbo:load', function () {
   const token = $('meta[name="csrf-token"]').attr('content');
   if (token) {
     $.ajaxSetup({
-      headers: {
-        'X-CSRF-Token': token
-      }
+      headers: { 'X-CSRF-Token': token }
     });
   }
 });
 
 document.addEventListener("turbo:load", function () {
   let editing = false;
+  let hidingWord = false;
+  let hidingMeaning = false;
 
-  // 初期状態のリセット
   $('.entry-checkbox').addClass('hidden');
   $('#edit-actions').addClass('hidden');
   $('#edit-mode-toggle').text('編集');
 
   $('#edit-mode-toggle').off().on('click', function () {
     editing = !editing;
+    hidingWord = false;
+    hidingMeaning = false;
 
     if (editing) {
       $('.entry-checkbox').removeClass('hidden');
@@ -35,18 +36,31 @@ document.addEventListener("turbo:load", function () {
       $('#edit-actions').addClass('hidden');
       $(this).text('編集');
     }
+
+    $('.word-text').removeClass('invisible');
+    $('.meaning-text').removeClass('invisible');
   });
 
-  $('.entry-card').off().on('click', function (e) {
-    const entryId = $(this).data('entry-id');
+  $('.entry-card').off('click').on('click', function () {
     if (editing) {
       const checkbox = $(this).find('.entry-checkbox');
       checkbox.prop('checked', !checkbox.prop('checked'));
-    } else {
-      const showUrl = $(this).data('url');
-      if (showUrl) {
-        window.location.href = showUrl;
-      }
+      return;
+    }
+
+    if (hidingWord) {
+      $(this).find('.word-text').toggleClass('invisible');
+      return;
+    }
+
+    if (hidingMeaning) {
+      $(this).find('.meaning-text').toggleClass('invisible');
+      return;
+    }
+
+    const showUrl = $(this).data('url');
+    if (showUrl) {
+      window.location.href = showUrl;
     }
   });
 
@@ -65,7 +79,7 @@ document.addEventListener("turbo:load", function () {
     }
 
     const query = $.param({ entry_ids: selectedIds });
-    const moveUrl = $("#move-button").data("move-url") + "?" + query;
+    const moveUrl = $(this).data("move-url") + "?" + query;
     window.location.href = moveUrl;
   });
 
@@ -73,16 +87,16 @@ document.addEventListener("turbo:load", function () {
     const selectedIds = $('.entry-checkbox:checked').map(function () {
       return $(this).data('entry-id');
     }).get();
-  
+
     if (selectedIds.length === 0) {
       alert('削除する単語を選択してください');
       return;
     }
-  
+
     if (!confirm('本当に削除しますか？')) return;
-  
+
     const deleteUrl = $(this).data('delete-url');
-  
+
     $.ajax({
       url: deleteUrl,
       type: 'DELETE',
@@ -90,7 +104,7 @@ document.addEventListener("turbo:load", function () {
       success: function (response) {
         const url = new URL(response.redirect_url, window.location.origin);
         url.searchParams.set("notice", response.notice);
-        window.location.href = url.toString();  // フラッシュメッセージ付きでリダイレクト
+        window.location.href = url.toString();
       },
       error: function (xhr) {
         if (xhr.responseJSON?.error) {
@@ -101,9 +115,38 @@ document.addEventListener("turbo:load", function () {
       }
     });
   });
+
+  $('#toggle-word').off().on('click', function () {
+    hidingWord = !hidingWord;
+    hidingMeaning = false;
+
+    $('#toggle-meaning').removeClass('bg-gray-600 text-white px-3 py-1 rounded');
+    $(this).toggleClass('bg-gray-600 text-white px-3 py-1 rounded', hidingWord);
+
+    if (hidingWord) {
+      $('.word-text').addClass('invisible');
+      $('.meaning-text').removeClass('invisible');
+    } else {
+      $('.word-text').removeClass('invisible');
+    }
+  });
+
+  $('#toggle-meaning').off().on('click', function () {
+    hidingMeaning = !hidingMeaning;
+    hidingWord = false;
+
+    $('#toggle-word').removeClass('bg-gray-600 text-white px-3 py-1 rounded');
+    $(this).toggleClass('bg-gray-600 text-white px-3 py-1 rounded', hidingMeaning);
+
+    if (hidingMeaning) {
+      $('.meaning-text').addClass('invisible');
+      $('.word-text').removeClass('invisible');
+    } else {
+      $('.meaning-text').removeClass('invisible');
+    }
+  });
 });
 
-// 戻るボタンでキャッシュが使われたときにページをリロード
 window.addEventListener("pageshow", function (event) {
   if (event.persisted) {
     window.location.reload();
@@ -116,7 +159,6 @@ document.addEventListener("turbo:load", function () {
     setTimeout(() => {
       flash.style.transition = "opacity 0.6s ease";
       flash.style.opacity = "0";
-
       setTimeout(() => {
         flash.remove();
       }, 600);
