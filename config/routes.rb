@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :wordbooks do
     collection do
       get :public_index  # 公開単語帳一覧ページ
+      get :copy_select  # チェック後にコピー先を選ぶ画面
+      post :copy_wordbooks  # コピー実行アクション
     end
     resource :like, only: [:create, :destroy] # いいね機能
     resources :word_entries, only: [:index, :show]

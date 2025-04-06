@@ -1,6 +1,6 @@
 class WordbooksController < ApplicationController
   before_action :authenticate_user!, except: [:public_index]
-  before_action :set_folder, except: [:public_index]
+  before_action :set_folder, except: [:public_index, :copy_select, :copy_wordbooks]
 
   def index
     session.delete(:from_public_list) 
@@ -62,6 +62,30 @@ class WordbooksController < ApplicationController
     Wordbook.where(id: wordbook_ids).update_all(folder_id: target_folder.id)
   
     redirect_to folder_wordbooks_path(@folder), notice: "#{wordbook_ids.count}件の単語帳を移動しました"
+  end
+
+  def copy_select
+    @folders = current_user.folders
+    @wordbook_ids = params[:wordbook_ids]
+  end
+  
+  def copy_wordbooks
+    folder = current_user.folders.find(params[:target_folder_id])
+    wordbooks = Wordbook.where(id: params[:wordbook_ids])
+  
+    wordbooks.each do |wordbook|
+      new_book = folder.wordbooks.create!(
+        title: wordbook.title,
+        description: wordbook.description,
+        is_public: false # コピーは非公開にしておくなど
+      )
+  
+      wordbook.word_entries.find_each do |entry|
+        new_book.word_entries.create!(word: entry.word, meaning: entry.meaning, example_sentence: entry.example_sentence)
+      end
+    end
+  
+    redirect_to folder_wordbooks_path(folder), notice: "#{wordbooks.size}件の単語帳をコピーしました"
   end
 
   private

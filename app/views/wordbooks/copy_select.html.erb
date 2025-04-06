@@ -1,0 +1,17 @@
+<h2 class="text-xl font-bold mb-6 text-center">コピー先フォルダを選択</h2>
+
+<%= form_with url: copy_wordbooks_wordbooks_path, method: :post, local: true do |f| %>
+  <div class="mb-4">
+    <p class="mb-2 font-medium">コピー先のフォルダを選んでください：</p>
+    <%= f.select :target_folder_id, options_from_collection_for_select(@folders, :id, :name),
+                {}, class: "w-full border border-gray-300 rounded px-3 py-2" %>
+  </div>
+
+  <% @wordbook_ids.each do |id| %>
+    <%= hidden_field_tag "wordbook_ids[]", id %>
+  <% end %>
+
+  <div class="text-right">
+    <%= f.submit "コピーする", class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
+  </div>
+<% end %>

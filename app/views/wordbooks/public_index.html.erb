@@ -1,10 +1,40 @@
 <h2 class="text-xl font-bold mb-6 text-center">みんなの単語帳</h2>
 
+<% if user_signed_in? %>
+  <div class="mb-4 flex justify-between items-center">
+    <!-- 左寄せ：コピー先を選ぶ -->
+    <div>
+      <button id="copy-select-button"
+              class="hidden bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm"
+              data-copy-url="<%= copy_select_wordbooks_path %>">
+        コピー先を選ぶ
+      </button>
+    </div>
+
+    <!-- 右寄せ：コピー開始／キャンセル -->
+    <div>
+      <button id="copy-mode-toggle"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">
+        単語帳をコピーする
+      </button>
+    </div>
+  </div>
+<% end %>
+
 <% if @wordbooks.any? %>
   <ul class="space-y-4">
     <% @wordbooks.each do |wordbook| %>
-      <li class="p-4 bg-white shadow rounded">
-        <div class="flex justify-between items-start">
+      <li class="wordbook-card p-4 bg-white shadow rounded flex gap-4 items-start"
+          data-wordbook-id="<%= wordbook.id %>">
+
+        <% if user_signed_in? %>
+          <!-- チェックボックス（コピー用） -->
+          <div>
+            <input type="checkbox" class="wordbook-copy-checkbox hidden" data-wordbook-id="<%= wordbook.id %>">
+          </div>
+        <% end %>
+
+        <div class="flex justify-between items-start w-full">
           <!-- 左側：タイトル＋作成者＋いいね -->
           <div class="w-1/3">
             <p class="text-lg font-semibold">

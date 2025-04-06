@@ -184,6 +184,37 @@ document.addEventListener("turbo:load", function () {
     window.location.href = moveUrl;
   });
 
+  // === 単語帳コピー機能 ===
+  $('#copy-mode-toggle').off().on('click', function () {
+    const checkboxes = $('.wordbook-copy-checkbox');
+    const copyBtn = $('#copy-select-button');
+
+    if (checkboxes.first().hasClass('hidden')) {
+      checkboxes.removeClass('hidden');
+      copyBtn.removeClass('hidden');
+      $(this).text('キャンセル');
+    } else {
+      checkboxes.addClass('hidden');
+      copyBtn.addClass('hidden');
+      $(this).text('単語帳をコピーする');
+    }
+  });
+
+  $('#copy-select-button').off().on('click', function () {
+    const selectedIds = $('.wordbook-copy-checkbox:checked').map(function () {
+      return $(this).data('wordbook-id');
+    }).get();
+
+    if (selectedIds.length === 0) {
+      alert('コピーする単語帳を選択してください');
+      return;
+    }
+
+    const query = $.param({ wordbook_ids: selectedIds });
+    const copyUrl = $(this).data("copy-url") + "?" + query;
+    window.location.href = copyUrl;
+  });
+
   // === プロフィール画像のドロップダウン ===
   const avatarBtn = document.getElementById("avatar-button");
   const dropdown = document.getElementById("dropdown-menu");
