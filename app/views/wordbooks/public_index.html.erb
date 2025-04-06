@@ -3,15 +3,36 @@
 <% if @wordbooks.any? %>
   <ul class="space-y-4">
     <% @wordbooks.each do |wordbook| %>
-      <li class="p-4 bg-white shadow rounded hover:bg-gray-50 cursor-pointer"
-          onclick="location.href='<%= folder_wordbook_word_entries_path(wordbook.folder, wordbook) %>'">
+      <li class="p-4 bg-white shadow rounded">
         <div class="flex justify-between items-start">
-          <!-- 左側：タイトル＋作成者 -->
+          <!-- 左側：タイトル＋作成者＋いいね -->
           <div class="w-1/3">
-            <p class="text-lg font-semibold"><%= wordbook.title %></p>
+            <p class="text-lg font-semibold">
+              <%= link_to wordbook.title, folder_wordbook_word_entries_path(wordbook.folder, wordbook),
+                          class: "text-blue-600 hover:underline" %>
+            </p>
+
             <% if wordbook.folder.user.present? %>
               <p class="text-xs text-gray-400 mt-1">by <%= wordbook.folder.user.username %></p>
             <% end %>
+
+            <div class="mt-2 flex items-center gap-1">
+              <% if user_signed_in? %>
+                <% if current_user.likes.exists?(wordbook_id: wordbook.id) %>
+                  <%= button_to "♥️", wordbook_like_path(wordbook), method: :delete,
+                                class: "text-red-500 text-lg" %>
+                <% else %>
+                  <%= button_to "♡", wordbook_like_path(wordbook), method: :post,
+                                class: "text-gray-600 text-lg" %>
+                <% end %>
+              <% else %>
+                <!-- 非ログインユーザーはアイコンだけ表示 -->
+                <span class="text-gray-400 text-lg">♡</span>
+              <% end %>
+
+              <!-- いいね数は常に表示 -->
+              <span class="text-sm text-gray-700"><%= wordbook.likes.count %></span>
+            </div>
           </div>
 
           <!-- 右側：説明文 -->

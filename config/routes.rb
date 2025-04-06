@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     collection do
       get :public_index  # 公開単語帳一覧ページ
     end
+    resource :like, only: [:create, :destroy] # いいね機能
     resources :word_entries, only: [:index, :show]
   end
 

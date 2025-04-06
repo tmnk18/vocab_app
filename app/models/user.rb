@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   has_many :folders, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_wordbooks, through: :likes, source: :wordbook
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
