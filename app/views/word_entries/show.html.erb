@@ -1,6 +1,11 @@
 <div class="mb-4">
-  <%= link_to "← 単語一覧に戻る", folder_wordbook_word_entries_path(@folder, @wordbook),
-              class: "text-sm text-blue-600 hover:underline" %>
+  <% if @folder %>
+    <%= link_to "← 単語一覧に戻る", folder_wordbook_word_entries_path(@folder, @wordbook),
+                class: "text-sm text-blue-600 hover:underline" %>
+  <% else %>
+    <%= link_to "← 単語一覧に戻る", wordbook_word_entries_path(@wordbook),
+                class: "text-sm text-blue-600 hover:underline" %>
+  <% end %>
 </div>
 
 <h2 class="text-xl font-bold mb-6">単語の詳細</h2>
@@ -21,8 +26,10 @@
     <p><%= @word_entry.example_sentence.presence || "（例文なし）" %></p>
   </div>
 
-  <div class="pt-4">
-    <%= link_to "編集", edit_folder_wordbook_word_entry_path(@folder, @wordbook, @word_entry),
-                class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
-  </div>
+  <% if @folder %>
+    <div class="pt-4">
+      <%= link_to "編集", edit_folder_wordbook_word_entry_path(@folder, @wordbook, @word_entry),
+                  class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+    </div>
+  <% end %>
 </div>

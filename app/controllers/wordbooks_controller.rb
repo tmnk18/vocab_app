@@ -1,8 +1,14 @@
 class WordbooksController < ApplicationController
-  before_action :set_folder
+  before_action :authenticate_user!, except: [:public_index]
+  before_action :set_folder, except: [:public_index]
 
   def index
+    session.delete(:from_public_list) 
     @wordbooks = @folder.wordbooks
+  end
+
+  def public_index
+    @wordbooks = Wordbook.includes(:folder).where(is_public: true).order(created_at: :desc)
   end
 
   def new

@@ -3,6 +3,7 @@ class FoldersController < ApplicationController
   before_action :set_folder, only: [:edit, :update, :destroy]
 
   def index
+    session.delete(:from_public_list)
     @folders = current_user.folders.order(created_at: :desc)
   end
 

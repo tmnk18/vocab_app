@@ -1,8 +1,16 @@
-<div class="mb-4 flex justify-between items-center">
-  <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder),
-              class: "text-sm text-blue-600 hover:underline" %>
+<% readonly_mode = !user_signed_in? || current_page?(public_index_wordbooks_path) %>
+<% from_public_list = session[:from_public_list] %> 
 
-  <button id="edit-mode-toggle" class="text-sm text-gray-600 hover:underline">編集</button>
+<div class="mb-4 flex justify-between items-center">
+  <% if from_public_list %>
+    <%= link_to "← 公開単語帳一覧に戻る", public_index_wordbooks_path, class: "text-sm text-blue-600 hover:underline" %>
+  <% else %>
+    <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder), class: "text-sm text-blue-600 hover:underline" %>
+  <% end %>
+
+  <% unless readonly_mode %>
+    <button id="edit-mode-toggle" class="text-sm text-gray-600 hover:underline">編集</button>
+  <% end %>
 </div>
 
 <h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」の単語一覧</h2>
@@ -10,42 +18,49 @@
 <div class="mb-4 flex justify-end gap-2">
   <button id="toggle-meaning" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">意味を隠す</button>
   <button id="toggle-word" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">単語を隠す</button>
-  <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
-              class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+
+  <% unless readonly_mode %>
+    <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
+                class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
+  <% end %>
 </div>
 
 <% if @word_entries.any? %>
-  <div id="edit-actions" class="mb-4 hidden flex gap-2">
-    <button id="move-button"
-            class="bg-yellow-500 text-white px-3 py-1 rounded text-sm"
-            data-move-url="<%= move_folder_wordbook_word_entries_path(@folder, @wordbook) %>">
-      移動
-    </button>
-    <button id="delete-button"
-            data-delete-url="<%= delete_entries_folder_wordbook_word_entries_path(@folder, @wordbook) %>"
-            class="bg-red-600 text-white px-3 py-1 rounded text-sm">
-      削除
-    </button>
-  </div>
+  <% unless readonly_mode %>
+    <div id="edit-actions" class="mb-4 hidden flex gap-2">
+      <button id="move-button"
+              class="bg-yellow-500 text-white px-3 py-1 rounded text-sm"
+              data-move-url="<%= move_folder_wordbook_word_entries_path(@folder, @wordbook) %>">
+        移動
+      </button>
+      <button id="delete-button"
+              data-delete-url="<%= delete_entries_folder_wordbook_word_entries_path(@folder, @wordbook) %>"
+              class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+        削除
+      </button>
+    </div>
+  <% end %>
 
   <ul class="space-y-2">
     <% @word_entries.each do |entry| %>
       <li class="entry-card flex p-4 bg-white rounded shadow hover:bg-gray-50 cursor-pointer"
           data-entry-id="<%= entry.id %>"
-          data-url="<%= folder_wordbook_word_entry_path(@folder, @wordbook, entry) %>">
+          data-url="<%= url_for(controller: 'word_entries', action: 'show', wordbook_id: @wordbook.id, id: entry.id) %>">
 
-        <!-- チェックボックス部分 -->
-        <div class="w-1/12 flex items-center justify-center">
-          <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
-        </div>
+        <% unless readonly_mode %>
+          <!-- チェックボックス部分 -->
+          <div class="w-1/12 flex items-center justify-center">
+            <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
+          </div>
+        <% end %>
 
         <!-- 単語部分 -->
-        <div class="w-5/12 flex items-center">
+        <div class="<%= readonly_mode ? 'w-5/12' : 'w-5/12' %> flex items-center">
           <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
         </div>
 
         <!-- 意味部分 -->
-        <div class="w-6/12 flex items-center">
+        <div class="<%= readonly_mode ? 'w-7/12' : 'w-6/12' %> flex items-center">
           <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
         </div>
       </li>

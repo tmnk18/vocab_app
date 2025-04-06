@@ -11,6 +11,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :wordbooks do
+    collection do
+      get :public_index  # 公開単語帳一覧ページ
+    end
+    resources :word_entries, only: [:index, :show]
+  end
+
   namespace :users do
     resource :settings, only: [:show]
     patch :update_account, to: "settings#update_account"

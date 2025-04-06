@@ -1,12 +1,24 @@
 class WordEntriesController < ApplicationController
-  before_action :set_folder_and_wordbook
+  before_action :authenticate_user!, unless: -> {
+    action_name.in?(%w[show index]) && Wordbook.find(params[:wordbook_id]).is_public?
+  }
+  before_action :set_folder_and_wordbook, except: [:show, :index]
+  before_action :set_folder_and_wordbook_for_public_access, only: [:show, :index]
   before_action :set_word_entry, only: [:show, :edit, :update]
 
   def index
     @word_entries = @wordbook.word_entries
+  
+    # 公開一覧から来たらフラグをセット（1回だけ）
+    if request.referer&.include?(public_index_wordbooks_path)
+      session[:from_public_list] = true
+    end
+  
+    @from_public_list = session[:from_public_list]
   end
 
   def show
+    # @folder, @wordbook は before_action でセット済み
   end
 
   def new
@@ -22,8 +34,7 @@ class WordEntriesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @word_entry.update(word_entry_params)
@@ -41,7 +52,6 @@ class WordEntriesController < ApplicationController
   def move_entries
     target_wordbook = Wordbook.find(params[:target_wordbook_id])
     entry_ids = params[:entry_ids]
-
     WordEntry.where(id: entry_ids).update_all(wordbook_id: target_wordbook.id)
 
     redirect_to folder_wordbook_word_entries_path(@folder, @wordbook),
@@ -69,8 +79,16 @@ class WordEntriesController < ApplicationController
     @wordbook = @folder.wordbooks.find(params[:wordbook_id])
   end
 
+  def set_folder_and_wordbook_for_public_access
+    @wordbook = Wordbook.find(params[:wordbook_id])
+    if !@wordbook.is_public? && !user_signed_in?
+      redirect_to root_path, alert: "この単語帳は非公開です"
+    end
+    @folder = @wordbook.folder if user_signed_in?
+  end
+
   def set_word_entry
-    @word_entry = @wordbook.word_entries.find(params[:id])
+    @word_entry = WordEntry.find(params[:id])
   end
 
   def word_entry_params
