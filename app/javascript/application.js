@@ -145,6 +145,22 @@ document.addEventListener("turbo:load", function () {
       $('.meaning-text').removeClass('invisible');
     }
   });
+
+  // プロフィール画像クリックでプルダウン切り替え
+  const avatarBtn = document.getElementById("avatar-button");
+  const dropdown = document.getElementById("dropdown-menu");
+
+  if (avatarBtn && dropdown) {
+    avatarBtn.addEventListener("click", () => {
+      dropdown.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!avatarBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  }
 });
 
 window.addEventListener("pageshow", function (event) {
