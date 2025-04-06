@@ -1,5 +1,5 @@
 <% readonly_mode = !user_signed_in? || @folder.user != current_user || current_page?(public_index_wordbooks_path) %>
-<% from_public_list = session[:from_public_list] %> 
+<% from_public_list = params[:from] == "public" %>
 
 <div class="mb-4 flex justify-between items-center">
   <% if from_public_list %>
