@@ -3,7 +3,7 @@
 
 <div class="mb-4 flex justify-between items-center">
   <% if from_public_list %>
-    <%= link_to "← 公開単語帳一覧に戻る", public_index_wordbooks_path, class: "text-sm text-blue-600 hover:underline" %>
+    <%= link_to "← みんなの単語帳一覧に戻る", public_index_wordbooks_path, class: "text-sm text-blue-600 hover:underline" %>
   <% else %>
     <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder), class: "text-sm text-blue-600 hover:underline" %>
   <% end %>
