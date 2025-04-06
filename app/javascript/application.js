@@ -14,7 +14,140 @@ $(document).on('turbo:load', function () {
 });
 
 document.addEventListener("turbo:load", function () {
-  // --- 単語帳編集モードの切り替え ---
+  let editing = false;
+  let hidingWord = false;
+  let hidingMeaning = false;
+
+  // === 単語一覧 編集モード ===
+  $('#edit-mode-toggle').off().on('click', function () {
+    editing = !editing;
+    hidingWord = false;
+    hidingMeaning = false;
+
+    if (editing) {
+      $('.entry-checkbox').removeClass('hidden');
+      $('#edit-actions').removeClass('hidden');
+      $(this).text('完了');
+    } else {
+      $('.entry-checkbox').addClass('hidden');
+      $('#edit-actions').addClass('hidden');
+      $(this).text('編集');
+    }
+
+    $('.word-text').removeClass('invisible');
+    $('.meaning-text').removeClass('invisible');
+  });
+
+  // === 単語カードクリック時 ===
+  $('.entry-card').off().on('click', function () {
+    if (editing) {
+      const checkbox = $(this).find('.entry-checkbox');
+      checkbox.prop('checked', !checkbox.prop('checked'));
+      return;
+    }
+
+    if (hidingWord) {
+      $(this).find('.word-text').toggleClass('invisible');
+      return;
+    }
+
+    if (hidingMeaning) {
+      $(this).find('.meaning-text').toggleClass('invisible');
+      return;
+    }
+
+    const showUrl = $(this).data('url');
+    if (showUrl) {
+      window.location.href = showUrl;
+    }
+  });
+
+  $('.entry-checkbox').off().on('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // === 意味／単語を隠すボタン ===
+  $('#toggle-word').off().on('click', function () {
+    hidingWord = !hidingWord;
+    hidingMeaning = false;
+
+    $('#toggle-meaning').removeClass('bg-gray-600 text-white');
+    $(this).toggleClass('bg-gray-600 text-white', hidingWord);
+
+    if (hidingWord) {
+      $('.word-text').addClass('invisible');
+      $('.meaning-text').removeClass('invisible');
+    } else {
+      $('.word-text').removeClass('invisible');
+    }
+  });
+
+  $('#toggle-meaning').off().on('click', function () {
+    hidingMeaning = !hidingMeaning;
+    hidingWord = false;
+
+    $('#toggle-word').removeClass('bg-gray-600 text-white');
+    $(this).toggleClass('bg-gray-600 text-white', hidingMeaning);
+
+    if (hidingMeaning) {
+      $('.meaning-text').addClass('invisible');
+      $('.word-text').removeClass('invisible');
+    } else {
+      $('.meaning-text').removeClass('invisible');
+    }
+  });
+
+  // === 単語一覧 移動ボタン ===
+  $('#move-button').off().on('click', function () {
+    const selectedIds = $('.entry-checkbox:checked').map(function () {
+      return $(this).data('entry-id');
+    }).get();
+
+    if (selectedIds.length === 0) {
+      alert('移動する単語を選択してください');
+      return;
+    }
+
+    const query = $.param({ entry_ids: selectedIds });
+    const moveUrl = $(this).data("move-url") + "?" + query;
+    window.location.href = moveUrl;
+  });
+
+  // === 単語一覧 削除ボタン ===
+  $('#delete-button').off().on('click', function () {
+    const selectedIds = $('.entry-checkbox:checked').map(function () {
+      return $(this).data('entry-id');
+    }).get();
+
+    if (selectedIds.length === 0) {
+      alert('削除する単語を選択してください');
+      return;
+    }
+
+    if (!confirm('本当に削除しますか？')) return;
+
+    const deleteUrl = $(this).data('delete-url');
+
+    $.ajax({
+      url: deleteUrl,
+      type: 'DELETE',
+      data: { entry_ids: selectedIds },
+      success: function (response) {
+        const url = new URL(response.redirect_url, window.location.origin);
+        url.searchParams.set("notice", response.notice);
+        window.location.href = url.toString();
+      },
+      error: function (xhr) {
+        if (xhr.responseJSON?.error) {
+          alert(xhr.responseJSON.error);
+        } else {
+          alert('削除に失敗しました');
+        }
+      }
+    });
+  });
+
+  // === 単語帳一覧 編集モード ===
   $('#edit-wordbook-mode').off().on('click', function () {
     const checkboxes = $('.wordbook-checkbox');
     const actions = $('#wordbook-edit-actions');
@@ -35,7 +168,7 @@ document.addEventListener("turbo:load", function () {
     }
   });
 
-  // --- 移動ボタン ---
+  // === 単語帳の移動ボタン ===
   $('#wordbook-move-button').off().on('click', function () {
     const selectedIds = $('.wordbook-checkbox:checked').map(function () {
       return $(this).data('wordbook-id');
@@ -51,7 +184,7 @@ document.addEventListener("turbo:load", function () {
     window.location.href = moveUrl;
   });
 
-  // --- プロフィール画像のプルダウン ---
+  // === プロフィール画像のドロップダウン ===
   const avatarBtn = document.getElementById("avatar-button");
   const dropdown = document.getElementById("dropdown-menu");
   if (avatarBtn && dropdown) {
@@ -65,7 +198,7 @@ document.addEventListener("turbo:load", function () {
     });
   }
 
-  // --- フラッシュメッセージの自動非表示 ---
+  // === フラッシュメッセージ自動非表示 ===
   const flash = document.querySelector(".flash-message");
   if (flash) {
     setTimeout(() => {
