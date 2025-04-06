@@ -49,6 +49,21 @@ class WordbooksController < ApplicationController
     redirect_to folder_wordbooks_path(@folder), notice: "単語帳を削除しました"
   end
 
+  def move
+    @wordbooks = @folder.wordbooks
+    @other_folders = current_user.folders.where.not(id: @folder.id)
+  end
+
+  def move_wordbooks
+    @folder = Folder.find(params[:folder_id])  # 移動元フォルダ
+    target_folder = Folder.find(params[:target_folder_id])  # 移動先フォルダ
+    wordbook_ids = params[:wordbook_ids]
+  
+    Wordbook.where(id: wordbook_ids).update_all(folder_id: target_folder.id)
+  
+    redirect_to folder_wordbooks_path(@folder), notice: "#{wordbook_ids.count}件の単語帳を移動しました"
+  end
+
   private
 
   def set_folder

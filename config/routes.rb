@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
   resources :folders do
     resources :wordbooks do
+      collection do
+        get :move           # 単語帳の移動先選択ページ表示
+        patch :move_wordbooks, as: :move_wordbooks # パスヘルパー名を短く設定
+      end
+  
       resources :word_entries do
         collection do
-          get :move  # 移動先選択ページ表示
-          patch :move_entries  # 移動処理
-          delete :delete_entries # 削除処理 
+          get :move           # 単語の移動先選択ページ表示
+          patch :move_entries # 単語の移動処理
+          delete :delete_entries # 単語の一括削除処理
         end
       end
     end
