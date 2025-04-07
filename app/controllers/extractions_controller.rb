@@ -11,16 +11,17 @@ class ExtractionsController < ApplicationController
   end
 
   def fetch_meanings
-    # 選択した単語の意味を取得（ステップ3）
+    return redirect_to new_extraction_path if request.get?
+  
     selected_words = params[:words] || []
-
+  
     @entries = selected_words.map do |word|
       {
         word: word,
         meaning: fetch_meaning(word)
       }
     end
-
+  
     render :confirm
   end
 
