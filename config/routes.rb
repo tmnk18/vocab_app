@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       post :fetch_meanings
       get :fetch_meanings
       post :select_target
+      get :select_target
       post :register
     end
   end

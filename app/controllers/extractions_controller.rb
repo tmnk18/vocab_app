@@ -26,10 +26,17 @@ class ExtractionsController < ApplicationController
   end
 
   def select_target
+    entries_param = params[:entries]
+  
+    if entries_param.blank?
+      redirect_to new_extraction_path
+      return
+    end
+  
+    @entries = entries_param
     @folders = current_user.folders
-    @entries = params[:entries]
-    @words = params[:entries].map { |entry| entry[:word] }
-    @meanings = params[:entries].map { |entry| entry[:meaning] }
+    @words = @entries.map { |entry| entry[:word] }
+    @meanings = @entries.map { |entry| entry[:meaning] }
   end
 
   def register
