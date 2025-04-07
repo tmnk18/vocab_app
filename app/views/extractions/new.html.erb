@@ -1,0 +1,34 @@
+<h2 class="text-xl font-bold mb-4 text-center">英文から単語を抽出</h2>
+
+<!-- ステップ1：英文入力画面 -->
+<div id="extraction-input-area">
+  <textarea id="original-text" rows="5" class="w-full border border-gray-300 rounded px-3 py-2 mb-4"
+            placeholder="ここに英文を入力してください"></textarea>
+
+  <!-- 🔧 修正点：text-right に変更してOKボタンを右寄せ -->
+  <div class="text-right">
+    <button id="start-extraction" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      OK
+    </button>
+  </div>
+</div>
+
+<!-- ステップ2：単語選択画面 -->
+<div id="extraction-selection-area" class="hidden">
+  <p class="mb-2 text-sm text-gray-700">抽出する単語をクリックして選択してください：</p>
+  <div id="extraction-result" class="mb-4 flex flex-wrap gap-2"></div>
+
+  <!-- 🔧 修正点：ボタン2つを右寄せ、間にスペース -->
+  <div class="flex justify-end gap-2">
+    <button id="extraction-cancel" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
+      キャンセル
+    </button>
+    <button id="extraction-next" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+      抽出
+    </button>
+  </div>
+</div>
+
+<!-- 抽出語の送信フォーム（ステップ3へ） -->
+<%= form_with url: tokenize_extractions_path, method: :post, id: "selected-words-form", local: true do %>
+<% end %>

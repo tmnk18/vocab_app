@@ -38,6 +38,11 @@ class FoldersController < ApplicationController
     redirect_to folders_path, notice: "フォルダを削除しました"
   end
 
+  def wordbooks
+    folder = current_user.folders.find(params[:id])
+    render json: folder.wordbooks.select(:id, :title)
+  end
+
   private
 
   def set_folder

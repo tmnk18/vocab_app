@@ -1,3 +1,4 @@
+import "./controllers/extraction"
 import "@hotwired/turbo-rails"
 import "controllers"
 import $ from "jquery"

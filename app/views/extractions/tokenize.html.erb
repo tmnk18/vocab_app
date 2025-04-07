@@ -1,0 +1,36 @@
+<h2 class="text-xl font-bold mb-4 text-center">単語を選択してください</h2>
+
+<div class="mb-6 p-4 border rounded bg-gray-50">
+  <% @tokens.each do |token| %>
+    <span class="selectable-word inline-block m-1 px-3 py-1 border rounded cursor-pointer bg-white hover:bg-yellow-100">
+      <%= token %>
+    </span>
+  <% end %>
+</div>
+
+<%= form_with url: fetch_meanings_extractions_path, method: :post, id: "token-form" do %>
+  <input type="hidden" name="selected_words[]" id="selected-words">
+  <div class="text-center">
+    <%= submit_tag "抽出", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectedWords = new Set();
+
+    document.querySelectorAll(".selectable-word").forEach(word => {
+      word.addEventListener("click", function () {
+        const text = this.textContent.trim();
+        if (selectedWords.has(text)) {
+          selectedWords.delete(text);
+          this.classList.remove("bg-yellow-300");
+        } else {
+          selectedWords.add(text);
+          this.classList.add("bg-yellow-300");
+        }
+        document.getElementById("selected-words").value = Array.from(selectedWords);
+      });
+    });
+  });
+</script>

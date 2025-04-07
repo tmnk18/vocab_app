@@ -1,0 +1,33 @@
+<h2 class="text-xl font-bold mb-4 text-center">保存先の選択</h2>
+
+<%= form_with url: register_extractions_path, method: :post, local: true, id: "save-form" do %>
+  <% @entries.each do |entry| %>
+    <input type="hidden" name="entries[][word]" value="<%= entry[:word] %>">
+    <input type="hidden" name="entries[][meaning]" value="<%= entry[:meaning] %>">
+  <% end %>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium mb-1">フォルダを選択</label>
+    <select name="folder_id" id="folder-select"
+            class="w-full border border-gray-300 rounded px-3 py-2">
+      <option value="">選択してください</option>
+      <% @folders.each do |folder| %>
+        <option value="<%= folder.id %>"><%= folder.name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium mb-1">単語帳を選択</label>
+    <select name="wordbook_id" id="wordbook-select"
+            class="w-full border border-gray-300 rounded px-3 py-2">
+      <option value="">フォルダを先に選んでください</option>
+    </select>
+  </div>
+
+  <div class="text-center mt-6">
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      登録
+    </button>
+  </div>
+<% end %>

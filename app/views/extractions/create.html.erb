@@ -1,0 +1,11 @@
+<h2 class="text-xl font-bold mb-4 text-center">単語と意味の編集</h2>
+
+<%= form_with url: confirm_extractions_path, method: :post, local: true do %>
+  <div id="extracted-word-list" data-entries='<%= raw @entries.to_json %>'></div>
+
+  <div class="mt-4 text-center">
+    <button type="submit" id="go-next-step" class="hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      OK
+    </button>
+  </div>
+<% end %>

@@ -88,6 +88,16 @@ class WordbooksController < ApplicationController
     redirect_to folder_wordbooks_path(folder), notice: "#{wordbooks.size}件の単語帳をコピーしました"
   end
 
+  def fetch_meanings
+    selected_words = params[:selected_words] || []  # ["apple", "banana"]
+
+    results = selected_words.map do |word|
+      DictionaryService.lookup(word)
+    end
+
+    render json: results
+  end
+
   private
 
   def set_folder
