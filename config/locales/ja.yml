@@ -1,4 +1,28 @@
 ja:
+  devise:
+    sessions:
+      signed_in: "ログインしました" 
+      signed_out: "ログアウトしました"
+    registrations:
+      signed_up: "アカウント登録が完了しました"
+      updated: "アカウント情報を更新しました"
+    passwords:
+      send_instructions: "パスワード再設定の案内を送信しました"
+      updated: "パスワードが更新されました"
+      not_found_in_database: "そのメールアドレスは登録されていません"
+    confirmations:
+      send_instructions: "確認メールを送信しました"
+      confirmed: "メールアドレスの確認が完了しました"
+    unlocks:
+      send_instructions: "アカウントロック解除の案内を送信しました"
+      unlocked: "アカウントロックが解除されました"
+    failure:
+      unauthenticated: "ログインが必要です"
+      invalid: "メールアドレスまたはパスワードが正しくありません"
+      locked: "アカウントがロックされています"
+      last_attempt: "アカウントがロックされる寸前です"
+      already_authenticated: "すでにログインしています"
+
   activerecord:
     models:
       folder: フォルダ
