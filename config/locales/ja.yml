@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      folder: フォルダ
+    attributes:
+      folder:
+        name: フォルダ名
+    errors:
+      messages:
+        blank: "を入力してください"
+        taken: "はすでに存在します"
+        too_long: "は%{count}文字以内で入力してください"

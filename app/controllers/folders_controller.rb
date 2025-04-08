@@ -16,7 +16,6 @@ class FoldersController < ApplicationController
     if @folder.save
       redirect_to folders_path, notice: "フォルダを作成しました"
     else
-      flash.now[:alert] = "フォルダの作成に失敗しました"
       render :new, status: :unprocessable_entity
     end
   end
