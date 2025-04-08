@@ -1,15 +1,21 @@
 ja:
   devise:
+    errors:
+      messages:
+        current_password: "現在のパスワードを入力してください"
+        not_saved:
+          one: "エラーが発生したため %{resource} は保存されませんでした。"
+          other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
     sessions:
-      signed_in: "ログインしました" 
-      signed_out: "ログアウトしました"
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
     registrations:
-      signed_up: "アカウント登録が完了しました"
-      updated: "アカウント情報を更新しました"
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報を更新しました。"
     passwords:
-      send_instructions: "パスワード再設定の案内を送信しました"
-      updated: "パスワードが更新されました"
-      not_found_in_database: "そのメールアドレスは登録されていません"
+      send_instructions: "パスワード再設定の案内を送信しました。"
+      updated: "パスワードが更新されました。"
+      not_found_in_database: "そのメールアドレスは登録されていません。"
     confirmations:
       send_instructions: "確認メールを送信しました"
       confirmed: "メールアドレスの確認が完了しました"
@@ -26,11 +32,44 @@ ja:
   activerecord:
     models:
       folder: フォルダ
+      username: ユーザー
     attributes:
       folder:
         name: フォルダ名
+      user:
+        username: ユーザー名
+        confirmation_sent_at: パスワード確認送信時刻
+        confirmation_token: パスワード確認用トークン
+        confirmed_at: パスワード確認時刻
+        created_at: 作成日
+        current_password: 現在のパスワード
+        current_sign_in_at: 現在のログイン時刻
+        current_sign_in_ip: 現在のログインIPアドレス
+        email: Eメール
+        encrypted_password: 暗号化パスワード
+        failed_attempts: 失敗したログイン試行回数
+        last_sign_in_at: 最終ログイン時刻
+        last_sign_in_ip: 最終ログインIPアドレス
+        locked_at: ロック時刻
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+        remember_created_at: ログイン記憶時刻
+        remember_me: ログインを記憶する
+        reset_password_sent_at: パスワードリセット送信時刻
+        reset_password_token: パスワードリセット用トークン
+        sign_in_count: ログイン回数
+        unconfirmed_email: 未確認Eメール
+        unlock_token: ロック解除用トークン
+        updated_at: 更新日
     errors:
       messages:
         blank: "を入力してください"
         taken: "はすでに存在します"
         too_long: "は%{count}文字以内で入力してください"
+
+  errors:
+    messages:
+      not_saved: ""
+      blank: "を入力してください"
+      taken: "はすでに存在します"
+      too_long: "は%{count}文字以内で入力してください"
