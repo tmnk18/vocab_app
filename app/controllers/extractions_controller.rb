@@ -2,7 +2,6 @@ class ExtractionsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    # 英文入力画面（ステップ1）
   end
 
   def tokenize
@@ -59,7 +58,6 @@ class ExtractionsController < ApplicationController
   private
 
   def fetch_meaning(word)
-    # 将来的に辞書API連携予定。今は仮で "テスト"
-    "テスト"
+    DictionaryService.fetch_meaning(word)
   end
 end

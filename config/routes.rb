@@ -2,9 +2,7 @@ Rails.application.routes.draw do
   get 'extractions/new'
 
   resources :folders do
-    # 単語帳一覧取得（AJAX用）
-    get :wordbooks, on: :member
-
+    get :wordbooks_list, on: :member  # フォルダ内の単語帳一覧を取得するアクション
     resources :wordbooks do
       collection do
         get :move

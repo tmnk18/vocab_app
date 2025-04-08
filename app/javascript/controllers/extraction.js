@@ -63,7 +63,6 @@ $(document).on("turbo:load", function () {
     form.submit();
   });
 
-  // ▼▼▼ ステップ4：フォルダ変更時に単語帳を読み込む ▼▼▼
   $("#folder-select").off().on("change", function () {
     const folderId = $(this).val();
     const $wordbookSelect = $("#wordbook-select");
@@ -74,7 +73,7 @@ $(document).on("turbo:load", function () {
     }
 
     $.ajax({
-      url: `/folders/${folderId}/wordbooks.json`,
+      url: `/folders/${folderId}/wordbooks_list.json`, 
       type: "GET",
       dataType: "json",
       success: function (data) {
