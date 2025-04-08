@@ -48,6 +48,7 @@ $(document).on("turbo:load", function () {
     const form = $("#selected-words-form");
     form.empty();
 
+    form.attr("method", "post");
     form.attr("action", "/extractions/fetch_meanings");
 
     const token = $('meta[name="csrf-token"]').attr('content');
@@ -55,8 +56,8 @@ $(document).on("turbo:load", function () {
       form.append(`<input type="hidden" name="authenticity_token" value="${token}">`);
     }
 
-    selectedWords.forEach((word) => {
-      const input = `<input type='hidden' name='words[]' value='${word}'>`;
+    selectedWords.forEach((word, index) => {
+      const input = `<input type='hidden' id='word-${index}' name='words[]' value='${word}'>`;
       form.append(input);
     });
 
@@ -73,7 +74,7 @@ $(document).on("turbo:load", function () {
     }
 
     $.ajax({
-      url: `/folders/${folderId}/wordbooks_list.json`, 
+      url: `/folders/${folderId}/wordbooks_list.json`,
       type: "GET",
       dataType: "json",
       success: function (data) {

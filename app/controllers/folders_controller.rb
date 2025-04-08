@@ -43,6 +43,13 @@ class FoldersController < ApplicationController
     render json: folder.wordbooks.select(:id, :title)
   end
 
+  # フォルダに属する単語帳をJSONで返す
+  def wordbooks_list
+    folder = current_user.folders.find(params[:id])
+    wordbooks = folder.wordbooks.select(:id, :title)
+    render json: wordbooks
+  end
+
   private
 
   def set_folder

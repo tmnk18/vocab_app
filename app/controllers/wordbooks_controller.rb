@@ -88,12 +88,7 @@ class WordbooksController < ApplicationController
     redirect_to folder_wordbooks_path(folder), notice: "#{wordbooks.size}件の単語帳をコピーしました"
   end
 
-  # フォルダに属する単語帳をJSONで返す
-  def wordbooks_list
-    folder = current_user.folders.find(params[:id])
-    wordbooks = folder.wordbooks.select(:id, :title)
-    render json: wordbooks
-  end
+
 
   private
 
