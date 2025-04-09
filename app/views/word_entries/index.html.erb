@@ -72,7 +72,11 @@
 
         <!-- 意味部分 -->
         <div class="<%= readonly_mode ? 'w-7/12' : 'w-6/12' %> flex items-center">
-          <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
+          <% if entry.meaning.present? %>
+            <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
+          <% else %>
+            <span class="meaning-text text-sm text-gray-400 italic">意味が入力されていません</span>
+          <% end %>
         </div>
       </li>
     <% end %>
