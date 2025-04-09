@@ -8,11 +8,13 @@ $(document).on("turbo:load", function () {
     originalText = $("#original-text").val().trim();
     if (!originalText) return;
 
-    const words = originalText.split(/\s+/);
+    // 単語を分割し、記号を除去
+    const words = originalText.split(/\s+/).map(word => word.replace(/[.,:;!?()"'`]/g, ""));
     const container = $("#extraction-result");
     container.empty();
 
     words.forEach((word) => {
+      if (word.trim() === "") return; // 空文字列を除外
       const span = $("<span>")
         .text(word)
         .addClass("inline-block px-2 py-1 m-1 border rounded cursor-pointer bg-gray-100 hover:bg-yellow-100")
