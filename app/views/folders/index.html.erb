@@ -18,11 +18,11 @@
 
           <div class="flex gap-2">
             <%= link_to "編集", edit_folder_path(folder),
-                        class: "text-blue-600 text-sm hover:underline" %>
+                        class: "bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm" %>
             <%= link_to "削除", folder_path(folder),
                         method: :delete,
                         data: { confirm: "本当に削除しますか？" },
-                        class: "text-red-600 text-sm hover:underline" %>
+                        class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm" %>
           </div>
         </li>
       <% end %>

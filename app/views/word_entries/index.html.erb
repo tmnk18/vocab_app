@@ -7,23 +7,34 @@
   <% else %>
     <%= link_to "← 単語帳一覧に戻る", folder_wordbooks_path(@folder), class: "text-sm text-blue-600 hover:underline" %>
   <% end %>
-
-  <% unless readonly_mode %>
-    <button id="edit-mode-toggle" class="text-sm text-gray-600 hover:underline">編集</button>
-  <% end %>
 </div>
 
 <h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」単語一覧</h2>
 
 <div class="mb-4 flex justify-end gap-2">
-  <button id="toggle-meaning" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">意味を隠す</button>
-  <button id="toggle-word" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">単語を隠す</button>
-
   <% unless readonly_mode %>
+    <!-- 編集ボタン -->
+    <button id="edit-mode-toggle" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm">
+      編集
+    </button>
+
+    <!-- 単語を追加ボタン -->
     <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
                 class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
   <% end %>
 </div>
+
+<% unless readonly_mode %>
+  <!-- 意味を隠す、単語を隠すボタン -->
+  <div class="mb-4 flex justify-end gap-2">
+    <button id="toggle-meaning" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">
+      意味を隠す
+    </button>
+    <button id="toggle-word" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">
+      単語を隠す
+    </button>
+  </div>
+<% end %>
 
 <% if @word_entries.any? %>
   <% unless readonly_mode %>
