@@ -65,19 +65,19 @@
           </div>
         <% end %>
 
-        <!-- 単語部分 -->
-        <div class="<%= readonly_mode ? 'w-5/12' : 'w-5/12' %> flex items-center">
-          <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
-        </div>
+<!-- 単語部分 -->
+<div class="w-5/12 flex items-center">
+  <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
+</div>
 
-        <!-- 意味部分 -->
-        <div class="<%= readonly_mode ? 'w-7/12' : 'w-6/12' %> flex items-center">
-          <% if entry.meaning.present? %>
-            <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
-          <% else %>
-            <span class="meaning-text text-sm text-gray-400 italic">意味が入力されていません</span>
-          <% end %>
-        </div>
+<!-- 意味部分 -->
+<div class="w-7/12 flex items-center">
+  <% if entry.meaning.present? %>
+    <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
+  <% else %>
+    <span class="meaning-text text-sm text-gray-400 italic">意味が入力されていません</span>
+  <% end %>
+</div>
       </li>
     <% end %>
   </ul>
