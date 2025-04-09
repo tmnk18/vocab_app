@@ -1,18 +1,9 @@
 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
   <h2 class="text-xl font-bold mb-4 text-center">単語帳を作成</h2>
 
-  <!-- エラーメッセージの表示 -->
-  <% if @wordbook.errors.any? %>
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-      <ul class="list-disc pl-5">
-        <% @wordbook.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <%= form_with model: [@folder, @wordbook], local: true do |f| %>
+    <%= render "shared/error_messages", resource: @wordbook %>
     <div class="mb-4">
       <%= f.label :title, "タイトル", class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :title, class: "w-full border rounded px-3 py-2 mt-1" %>
