@@ -22,6 +22,7 @@
             <%= link_to "みんなの単語帳", public_index_wordbooks_path, class: "hover:underline" %>
             <% if user_signed_in? %>
               <%= link_to "My単語帳", folders_path, class: "hover:underline" %>
+              <%= link_to "英文から単語抽出", new_extraction_path, class: "hover:underline" %>
             <% end %>
           </nav>
 
