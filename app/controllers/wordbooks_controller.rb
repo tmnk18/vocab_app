@@ -22,7 +22,6 @@ class WordbooksController < ApplicationController
     if @wordbook.save
       redirect_to folder_wordbooks_path(@folder), notice: "単語帳を作成しました"
     else
-      flash.now[:alert] = "単語帳の作成に失敗しました"
       render :new, status: :unprocessable_entity
     end
   end
@@ -77,7 +76,7 @@ class WordbooksController < ApplicationController
       new_book = folder.wordbooks.create!(
         title: wordbook.title,
         description: wordbook.description,
-        is_public: false # コピーは非公開にしておくなど
+        is_public: false
       )
   
       wordbook.word_entries.find_each do |entry|

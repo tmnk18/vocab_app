@@ -33,6 +33,7 @@ ja:
     models:
       folder: フォルダ
       username: ユーザー
+      wordbook: ワードブック
     attributes:
       folder:
         name: フォルダ名
@@ -61,6 +62,10 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
+      wordbook:
+        title: タイトル
+        description: 説明
+        folder_id: フォルダ
     errors:
       messages:
         blank: "を入力してください"
