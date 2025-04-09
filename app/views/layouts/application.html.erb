@@ -14,13 +14,10 @@
     <header class="bg-blue-600 text-white shadow">
       <div class="container mx-auto flex justify-between items-center px-4 h-16">
 
-        <!-- 左：ロゴ -->
         <%= link_to "Vocalog", root_path, class: "text-xl font-bold hover:underline" %>
 
-        <!-- 右：ナビゲーション + ユーザー関連 -->
         <div class="flex items-center gap-6">
 
-          <!-- ナビゲーション -->
           <nav class="flex items-center gap-4 text-sm">
             <%= link_to "みんなの単語帳", public_index_wordbooks_path, class: "hover:underline" %>
             <% if user_signed_in? %>
@@ -68,13 +65,13 @@
         <% alert_message = flash[:alert] || params[:alert] %>
 
         <% if notice_message %>
-          <div class="max-w-2xl mx-auto">
+          <div class="max-w-3xl mx-auto">
             <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-green-100 text-green-800">
               <%= notice_message %>
             </div>
           </div>
         <% elsif alert_message %>
-          <div class="max-w-2xl mx-auto">
+          <div class="max-w-3xl mx-auto">
             <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-red-100 text-red-800">
               <%= alert_message %>
             </div>
@@ -83,7 +80,7 @@
       </div>
     </div>
 
-    <main class="container mx-auto px-4 mt-6 pt-10 max-w-2xl">
+    <main class="container mx-auto px-4 mt-6 pt-10 max-w-3xl">
       <%= yield %>
     </main>
   </body>

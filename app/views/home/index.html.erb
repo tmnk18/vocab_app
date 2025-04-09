@@ -1,4 +1,52 @@
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+<div class="bg-gradient-to-b from-blue-50 to-white min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- ヘッダー -->
+    <header class="text-center mb-8">
+      <h1 class="font-extrabold text-4xl text-blue-600 drop-shadow-md">シンプルな単語帳アプリ</h1>
+      <p class="text-gray-700 mt-2 text-base">英文をコピペして、単語を抽出し、意味を自動取得！</p>
+    </header>
+
+    <!-- 特徴セクション -->
+    <section class="mb-12">
+      <h2 class="font-bold text-2xl text-gray-800 text-center mb-6">アプリの特徴</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-center items-center text-center h-40">
+          <div class="text-blue-600 text-3xl mb-1">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3 class="font-semibold text-lg text-gray-800">シンプルなデザイン</h3>
+          <p class="text-gray-600 mt-1 text-sm">直感的で使いやすいインターフェース。</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-center items-center text-center h-40">
+          <div class="text-blue-600 text-3xl mb-1">
+            <i class="fas fa-copy"></i>
+          </div>
+          <h3 class="font-semibold text-lg text-gray-800">コピペで簡単</h3>
+          <p class="text-gray-600 mt-1 text-sm">英文をコピペするだけで単語を抽出。</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-center items-center text-center h-40">
+          <div class="text-blue-600 text-3xl mb-1">
+            <i class="fas fa-language"></i>
+          </div>
+          <h3 class="font-semibold text-lg text-gray-800">意味を自動取得</h3>
+          <p class="text-gray-600 mt-1 text-sm">英単語の意味を自動的に取得。</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-center items-center text-center h-40">
+          <div class="text-blue-600 text-3xl mb-1">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3 class="font-semibold text-lg text-gray-800">自分だけの単語帳</h3>
+          <p class="text-gray-600 mt-1 text-sm">簡単に単語帳を作成可能。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- アクションセクション -->
+    <section class="text-center">
+      <h2 class="font-bold text-2xl text-gray-800 mb-4">今すぐ始めましょう！</h2>
+      <p class="text-gray-600 mb-6 text-sm">アカウントを作成して、単語帳を作り始めましょう。</p>
+      <%= link_to "アカウントを作成", new_user_registration_path, class: "bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-blue-800 text-base transition-all duration-300" %>
+      <p class="mt-4 text-gray-600 text-sm">すでにアカウントをお持ちですか？ <%= link_to "ログイン", new_user_session_path, class: "text-blue-600 hover:underline" %></p>
+    </section>
+  </div>
 </div>
