@@ -68,18 +68,22 @@
         <% alert_message = flash[:alert] || params[:alert] %>
 
         <% if notice_message %>
-          <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium max-w-xl mx-auto bg-green-100 text-green-800">
-            <%= notice_message %>
+          <div class="max-w-2xl mx-auto">
+            <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-green-100 text-green-800">
+              <%= notice_message %>
+            </div>
           </div>
         <% elsif alert_message %>
-          <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium max-w-xl mx-auto bg-red-100 text-red-800">
-            <%= alert_message %>
+          <div class="max-w-2xl mx-auto">
+            <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-red-100 text-red-800">
+              <%= alert_message %>
+            </div>
           </div>
         <% end %>
       </div>
     </div>
 
-    <main class="container mx-auto px-4 mt-6 pt-10">
+    <main class="container mx-auto px-4 mt-6 pt-10 max-w-2xl">
       <%= yield %>
     </main>
   </body>

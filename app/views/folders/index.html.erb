@@ -10,14 +10,12 @@
     <ul class="space-y-2">
       <% @folders.each do |folder| %>
         <li class="bg-white rounded shadow p-4 flex justify-between items-center">
-          <!-- 左：アイコン＋フォルダ名（リンク） -->
           <div class="flex items-center gap-2">
             <span class="text-xl">📁</span>
             <%= link_to folder.name, folder_wordbooks_path(folder),
                         class: "text-lg font-semibold text-gray-800 hover:underline" %>
           </div>
 
-          <!-- 右：編集・削除 -->
           <div class="flex gap-2">
             <%= link_to "編集", edit_folder_path(folder),
                         class: "text-blue-600 text-sm hover:underline" %>
