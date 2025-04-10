@@ -8,7 +8,9 @@ class WordbooksController < ApplicationController
   end
 
   def public_index
-    @wordbooks = Wordbook.includes(:folder).where(is_public: true).order(created_at: :desc)
+    @wordbooks = Wordbook.where(is_public: true)
+                      .includes(:folder => :user) 
+                      .order(created_at: :desc)
   end
 
   def new

@@ -4,7 +4,10 @@ class FoldersController < ApplicationController
 
   def index
     session.delete(:from_public_list)
-    @folders = current_user.folders.order(created_at: :desc)
+    @folders = current_user.folders
+                          .includes(:user)  # ユーザー情報をEager Loading
+                          .includes(:wordbooks)  # 単語帳情報もEager Loading（関連データの表示がある場合）
+                          .order(created_at: :desc)
   end
 
   def new

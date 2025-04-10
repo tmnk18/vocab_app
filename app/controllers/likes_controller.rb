@@ -3,13 +3,17 @@ class LikesController < ApplicationController
   before_action :set_wordbook
 
   def create
-    current_user.likes.create(wordbook: @wordbook)
+    current_user.likes.create!(wordbook: @wordbook)
     redirect_back fallback_location: root_path, notice: "いいねしました！"
+  rescue ActiveRecord::RecordInvalid
+    redirect_back fallback_location: root_path, alert: "いいねできませんでした"
   end
 
   def destroy
-    current_user.likes.find_by(wordbook_id: @wordbook.id)&.destroy
+    current_user.likes.find_by!(wordbook_id: @wordbook.id).destroy!
     redirect_back fallback_location: root_path, notice: "いいねを取り消しました"
+  rescue ActiveRecord::RecordNotFound
+    redirect_back fallback_location: root_path, alert: "いいねが見つかりませんでした"
   end
 
   private
