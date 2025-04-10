@@ -11,7 +11,6 @@ FactoryBot.define do
     password { "password" }
     password_confirmation { "password" }
 
-    # アバターの添付が必要な場合のみ
     after(:build) do |user|
       if File.exist?(Rails.root.join('spec', 'fixtures', 'files', 'avatar.jpg'))
         user.avatar.attach(
