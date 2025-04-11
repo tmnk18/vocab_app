@@ -21,10 +21,10 @@ class DictionaryService
       end
       { word: word, meanings: meanings }
     else
-      { error: "Failed to fetch meaning for '#{word}'" }
+      { error: "意味を取得できませんでした" }
     end
   rescue => e
-    { error: "Error: #{e.message}" }
+    { error: "意味を取得できませんでした" }
   end
 
   def self.fetch_meaning(word)
