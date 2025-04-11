@@ -24,7 +24,7 @@ Rails.application.configure do
   # config.public_file_server.enabled = false
 
   # Compress CSS using a preprocessor.
-  config.assets.css_compressor = :sass
+  # config.assets.css_compressor = :sass
 
   # アセットのコンパイルを有効化
   config.assets.compile = true
