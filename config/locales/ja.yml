@@ -32,6 +32,11 @@ ja:
       user:
         not_found_in_database: "メールアドレスまたはパスワードが正しくありません。"
 
+  time:
+    formats:
+      default: "%Y年%m月%d日 %H:%M"
+      short: "%m/%d %H:%M"
+
   activerecord:
     models:
       folder: フォルダ
@@ -70,6 +75,7 @@ ja:
         title: タイトル
         description: 説明
         folder_id: フォルダ
+        is_public: 公開設定
       word_entry:
         word: 単語
         meaning: 意味
