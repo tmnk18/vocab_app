@@ -27,13 +27,13 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # アセットのコンパイルを有効化
-  config.assets.compile = true
+  # config.assets.compile = true
 
   # アセットのデバッグを無効化
   config.assets.debug = false
 
-  # アセットの圧縮を有効化
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  # アセットの圧縮を無効化
+  config.assets.js_compressor = nil
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
