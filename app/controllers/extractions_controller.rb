@@ -3,6 +3,8 @@
 class ExtractionsController < ApplicationController
   before_action :authenticate_user! # ログインユーザーのみアクセス可能
 
+  MAX_WORDS = 10 # 選択できる単語の最大数
+
   # 英文入力フォームを表示
   # GET /extractions/new
   def new
@@ -20,9 +22,15 @@ class ExtractionsController < ApplicationController
   def fetch_meanings
     # GETリクエストの場合は入力フォームにリダイレクト
     return redirect_to new_extraction_path if request.get?
-  
+
     selected_words = params[:words] || []
-  
+
+    # 単語数のバリデーション
+    if selected_words.size > MAX_WORDS
+      redirect_to new_extraction_path, alert: "選択できる単語は最大#{MAX_WORDS}個までです。"
+      return
+    end
+
     # 各単語について辞書APIから意味を取得
     @entries = selected_words.map do |word|
       {
@@ -30,7 +38,7 @@ class ExtractionsController < ApplicationController
         meaning: fetch_meaning(word)
       }
     end
-  
+
     render :confirm # 確認画面を表示
   end
 

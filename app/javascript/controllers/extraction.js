@@ -5,6 +5,8 @@
 import $ from "jquery";
 
 $(document).on("turbo:load", function () {
+  const MAX_WORDS = 10; // 選択できる単語の最大数
+
   // 元の英文を保持する変数
   let originalText = "";
 
@@ -31,6 +33,13 @@ $(document).on("turbo:load", function () {
         .addClass("inline-block px-2 py-1 m-1 border rounded cursor-pointer bg-gray-100 hover:bg-yellow-100")
         .on("click", function () {
           $(this).toggleClass("bg-yellow-300"); // クリックで選択/選択解除
+
+          // 単語数のバリデーション
+          const selectedCount = $("#extraction-result span.bg-yellow-300").length;
+          if (selectedCount > MAX_WORDS) {
+            alert(`選択できる単語は最大${MAX_WORDS}個までです。`);
+            $(this).removeClass("bg-yellow-300"); // 選択を解除
+          }
         });
       container.append(span);
     });
@@ -65,10 +74,16 @@ $(document).on("turbo:load", function () {
       selectedWords.push($(this).text());
     });
 
+    // 単語数のバリデーション
+    if (selectedWords.length > MAX_WORDS) {
+      alert(`選択できる単語は最大${MAX_WORDS}個までです。`);
+      return; // 処理を中断してページ遷移を防ぐ
+    }
+
     // 単語が選択されていない場合はアラート
     if (selectedWords.length === 0) {
       alert("抽出する単語を選択してください。");
-      return;
+      return; // 処理を中断してページ遷移を防ぐ
     }
 
     // フォームの準備
@@ -89,7 +104,7 @@ $(document).on("turbo:load", function () {
       form.append(input);
     });
 
-    form.submit();
+    form.submit(); // フォームを送信
   });
 
   /**
