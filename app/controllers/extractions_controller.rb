@@ -3,7 +3,7 @@
 class ExtractionsController < ApplicationController
   before_action :authenticate_user! # ログインユーザーのみアクセス可能
 
-  MAX_WORDS = 10 # 選択できる単語の最大数
+  MAX_WORDS = 20 # 選択できる単語の最大数
 
   # 英文入力フォームを表示
   # GET /extractions/new

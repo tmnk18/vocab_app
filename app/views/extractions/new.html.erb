@@ -32,8 +32,3 @@
 <!-- 抽出語の送信フォーム（ステップ3へ） -->
 <%= form_with url: tokenize_extractions_path, method: :post, id: "selected-words-form", local: true do %>
 <% end %>
-
-<!-- MAX_WORDSをJavaScriptに渡す -->
-<script>
-  const MAX_WORDS = <%= @max_words %>;
-</script>
