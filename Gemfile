@@ -77,3 +77,5 @@ gem "tailwindcss-rails", "~> 4.2"
 gem "devise"
 
 gem 'pg', group: :production
+
+gem 'uglifier', '>= 1.3.0'

@@ -33,7 +33,7 @@ Rails.application.configure do
   config.assets.debug = false
 
   # アセットの圧縮を有効化
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
