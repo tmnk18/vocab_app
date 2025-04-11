@@ -83,4 +83,4 @@
 
 ---
 
-📲 [使用開始はこちら](https://vocalog-47b33513825f.herokuapp.com/)（※実際のURLがあれば変更してください）
+📲 [使用開始はこちら](https://vocalog-47b33513825f.herokuapp.com/)
