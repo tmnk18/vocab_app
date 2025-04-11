@@ -33,8 +33,20 @@ class FoldersController < ApplicationController
   end
 
   def destroy
-    @folder.destroy
+    # フォルダの存在確認と取得
+    folder = Folder.find(params[:id])
+
+    # 権限チェック
+    unless folder.user_id == current_user.id
+      render status: :forbidden, json: { error: '権限がありません' }
+      return
+    end
+
+    # 削除処理
+    folder.destroy
     redirect_to folders_path, notice: "フォルダを削除しました"
+  rescue ActiveRecord::RecordNotFound
+    render status: :not_found, json: { error: 'フォルダが見つかりません' }
   end
 
   def wordbooks
@@ -52,7 +64,17 @@ class FoldersController < ApplicationController
   private
 
   def set_folder
-    @folder = current_user.folders.find(params[:id])
+    # 編集・更新時の権限チェック
+    folder = Folder.find(params[:id])
+    
+    unless folder.user_id == current_user.id
+      render status: :forbidden, json: { error: '権限がありません' }
+      return
+    end
+
+    @folder = folder
+  rescue ActiveRecord::RecordNotFound
+    render status: :not_found, json: { error: 'フォルダが見つかりません' }
   end
 
   def folder_params

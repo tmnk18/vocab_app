@@ -44,8 +44,12 @@ class WordbooksController < ApplicationController
   end
 
   def destroy
-    @folder = Folder.find(params[:folder_id])
     @wordbook = @folder.wordbooks.find(params[:id])
+    
+    unless @folder.user == current_user
+      return render status: :forbidden, json: { error: '権限がありません' }
+    end
+
     @wordbook.destroy
     redirect_to folder_wordbooks_path(@folder), notice: "単語帳を削除しました"
   end
