@@ -30,7 +30,22 @@ class DictionaryService
   def self.fetch_meaning(word)
     result = lookup(word)
     if result[:meanings]
-      result[:meanings][0][:definitions][0]
+      # 最初の意味を取得
+      meaning = result[:meanings][0][:definitions][0]
+
+      # 200文字以内に収める処理
+      if meaning.length > 200
+        truncated = meaning[0...200]
+        last_period_index = truncated.rindex('.')
+        if last_period_index
+          truncated = truncated[0..last_period_index] + " etc."
+        else
+          truncated += " etc."
+        end
+        truncated
+      else
+        meaning
+      end
     else
       result[:error] || "意味が見つかりませんでした"
     end

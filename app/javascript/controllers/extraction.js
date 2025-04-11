@@ -93,6 +93,47 @@ $(document).on("turbo:load", function () {
   });
 
   /**
+   * 選択された単語の意味を取得して送信する処理
+   */
+  $("#extraction-register").off().on("click", function () {
+    const selectedWords = [];
+    const meanings = [];
+
+    // 選択された単語とその意味を収集
+    $("#extraction-result span.bg-yellow-300").each(function () {
+      const word = $(this).text();
+      const meaning = $(this).data("meaning") || ""; // 意味を取得（例: data-attributeから）
+      
+      // 意味を200文字以内に切り詰める
+      const truncatedMeaning = meaning.substring(0, 200);
+
+      selectedWords.push({ word, meaning: truncatedMeaning });
+    });
+
+    // 単語が選択されていない場合はアラート
+    if (selectedWords.length === 0) {
+      alert("単語を選択してください。");
+      return;
+    }
+
+    // サーバーに送信
+    $.ajax({
+      url: "/extractions/register",
+      type: "POST",
+      data: {
+        entries: selectedWords,
+        authenticity_token: $('meta[name="csrf-token"]').attr("content"),
+      },
+      success: function () {
+        alert("単語が登録されました！");
+      },
+      error: function () {
+        alert("単語の登録に失敗しました。");
+      },
+    });
+  });
+
+  /**
    * フォルダ選択時の単語帳リスト更新
    * - 選択されたフォルダの単語帳一覧を取得
    * - セレクトボックスの選択肢を更新
