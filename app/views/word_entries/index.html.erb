@@ -1,6 +1,9 @@
+<%# 読み取り専用モードの判定（未ログイン、他ユーザーの単語帳、公開リストからの閲覧） %>
 <% readonly_mode = !user_signed_in? || @folder.user != current_user || current_page?(public_index_wordbooks_path) %>
+<%# 公開リストからのアクセスかどうかの判定 %>
 <% from_public_list = params[:from] == "public" %>
 
+<%# ナビゲーションリンク %>
 <div class="mb-4 flex justify-between items-center">
   <% if from_public_list %>
     <%= link_to "← みんなの単語帳一覧に戻る", public_index_wordbooks_path, class: "text-sm text-blue-600 hover:underline" %>
@@ -9,23 +12,25 @@
   <% end %>
 </div>
 
+<%# 単語帳のタイトル %>
 <h2 class="text-xl font-bold mb-4">「<%= @wordbook.title %>」単語一覧</h2>
 
+<%# 編集モードと単語追加のボタン %>
 <div class="mb-4 flex justify-end gap-2">
   <% unless readonly_mode %>
-    <!-- 編集ボタン -->
+    <%# 編集モードの切り替えボタン %>
     <button id="edit-mode-toggle" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm">
       編集
     </button>
 
-    <!-- 単語を追加ボタン -->
+    <%# 単語追加ページへのリンク %>
     <%= link_to "単語を追加", new_folder_wordbook_word_entry_path(@folder, @wordbook),
                 class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
   <% end %>
 </div>
 
+<%# 単語と意味の表示制御ボタン（編集可能モードのみ） %>
 <% unless readonly_mode %>
-  <!-- 単語を隠す、意味を隠すボタン -->
   <div class="mb-4 flex justify-end gap-2">
     <button id="toggle-word" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 text-sm">
       単語を隠す
@@ -36,14 +41,18 @@
   </div>
 <% end %>
 
+<%# 単語一覧の表示 %>
 <% if @word_entries.any? %>
+  <%# 編集モード時の操作ボタン %>
   <% unless readonly_mode %>
     <div id="edit-actions" class="mb-4 hidden flex gap-2">
+      <%# 単語の移動ボタン %>
       <button id="move-button"
               class="bg-yellow-500 text-white px-3 py-1 rounded text-sm"
               data-move-url="<%= move_folder_wordbook_word_entries_path(@folder, @wordbook) %>">
         移動
       </button>
+      <%# 単語の一括削除ボタン %>
       <button id="delete-button"
               data-delete-url="<%= delete_entries_folder_wordbook_word_entries_path(@folder, @wordbook) %>"
               class="bg-red-600 text-white px-3 py-1 rounded text-sm">
@@ -52,35 +61,38 @@
     </div>
   <% end %>
 
+  <%# 単語カードのリスト %>
   <ul class="space-y-2">
     <% @word_entries.each do |entry| %>
+      <%# 単語カード %>
       <li class="entry-card flex p-4 bg-white rounded shadow hover:bg-gray-50 cursor-pointer"
           data-entry-id="<%= entry.id %>"
           data-url="<%= url_for(controller: 'word_entries', action: 'show', wordbook_id: @wordbook.id, id: entry.id) %>">
 
+        <%# チェックボックス（編集可能モードのみ） %>
         <% unless readonly_mode %>
-          <!-- チェックボックス部分 -->
           <div class="w-1/12 flex items-center justify-center">
             <input type="checkbox" class="entry-checkbox hidden" data-entry-id="<%= entry.id %>">
           </div>
         <% end %>
 
-<!-- 単語部分 -->
-<div class="w-5/12 flex items-center">
-  <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
-</div>
+        <%# 単語テキスト %>
+        <div class="w-5/12 flex items-center">
+          <span class="word-text font-semibold text-gray-800"><%= entry.word %></span>
+        </div>
 
-<!-- 意味部分 -->
-<div class="w-7/12 flex items-center">
-  <% if entry.meaning.present? %>
-    <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
-  <% else %>
-    <span class="meaning-text text-sm text-gray-400 italic">意味が入力されていません</span>
-  <% end %>
-</div>
+        <%# 意味テキスト %>
+        <div class="w-7/12 flex items-center">
+          <% if entry.meaning.present? %>
+            <span class="meaning-text text-sm text-gray-600"><%= entry.meaning %></span>
+          <% else %>
+            <span class="meaning-text text-sm text-gray-400 italic">意味が入力されていません</span>
+          <% end %>
+        </div>
       </li>
     <% end %>
   </ul>
 <% else %>
+  <%# 単語が存在しない場合のメッセージ %>
   <p>この単語帳にはまだ単語が登録されていません。</p>
 <% end %>

@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# Tailwindとアプリケーション固有のスタイル %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%# JavaScriptのインポートマップ %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body class="bg-gray-50 text-gray-800">
+    <%# ヘッダーナビゲーション %>
     <header class="bg-blue-600 text-white shadow">
       <div class="container mx-auto flex justify-between items-center px-4 h-16">
-
+        <%# サイトロゴ/ホームリンク %>
         <%= link_to "Vocalog", root_path, class: "text-xl font-bold hover:underline" %>
 
         <div class="flex items-center gap-6">
-
+          <%# メインナビゲーション %>
           <nav class="flex items-center gap-4 text-sm">
             <%= link_to "みんなの単語帳", public_index_wordbooks_path, class: "hover:underline" %>
             <% if user_signed_in? %>
@@ -26,10 +29,10 @@
             <% end %>
           </nav>
 
-          <!-- ユーザー関連 -->
+          <%# ユーザーメニュー %>
           <div class="relative">
             <% if user_signed_in? %>
-              <!-- プロフィール画像 -->
+              <%# ユーザーアバター画像とドロップダウントリガー %>
               <button id="avatar-button"
                 class="w-9 h-9 rounded-full overflow-hidden bg-white border border-gray-300 focus:outline-none active:ring-2 active:ring-blue-300 cursor-pointer">
                 <% if current_user.avatar.attached? %>
@@ -39,7 +42,7 @@
                 <% end %>
               </button>
 
-              <!-- プルダウンメニュー -->
+              <%# ドロップダウンメニュー %>
               <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
                 <ul class="text-sm">
                   <li>
@@ -51,26 +54,29 @@
                 </ul>
               </div>
             <% else %>
+              <%# 未ログイン時の認証リンク %>
               <%= link_to "ログイン", new_user_session_path, class: "hover:underline text-sm mr-2" %>
               <%= link_to "新規登録", new_user_registration_path, class: "hover:underline text-sm" %>
             <% end %>
           </div>
-
         </div>
       </div>
     </header>
 
+    <%# フラッシュメッセージ表示エリア %>
     <div class="absolute top-16 left-0 w-full z-40">
       <div class="container mx-auto px-4">
         <% notice_message = flash[:notice] || params[:notice] %>
         <% alert_message = flash[:alert] || params[:alert] %>
 
+        <%# 成功メッセージ %>
         <% if notice_message %>
           <div class="max-w-3xl mx-auto">
             <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-green-100 text-green-800">
               <%= notice_message %>
             </div>
           </div>
+        <%# エラーメッセージ %>
         <% elsif alert_message %>
           <div class="max-w-3xl mx-auto">
             <div class="flash-message mb-4 p-4 rounded shadow text-sm font-medium bg-red-100 text-red-800">
@@ -81,6 +87,7 @@
       </div>
     </div>
 
+    <%# メインコンテンツエリア %>
     <main class="container mx-auto px-4 mt-6 pt-10 max-w-3xl">
       <%= yield %>
     </main>

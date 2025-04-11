@@ -5,7 +5,12 @@ import $ from "jquery"
 import Rails from "@rails/ujs"
 Rails.start()
 
-// Turboのロードイベントに対応
+/**
+ * アプリケーションのメインJavaScriptファイル
+ * 単語帳アプリケーションのクライアントサイド機能を管理
+ */
+
+// CSRFトークンの設定
 $(document).on('turbo:load', function () {
   const token = $('meta[name="csrf-token"]').attr('content');
   if (token) {
@@ -15,12 +20,18 @@ $(document).on('turbo:load', function () {
   }
 });
 
+// メイン機能の初期化
 document.addEventListener("turbo:load", function () {
-  let editing = false; // 編集モードの状態
-  let hidingWord = false; // 単語を隠すモードの状態
+  // グローバル状態管理
+  let editing = false;      // 編集モードの状態
+  let hidingWord = false;   // 単語を隠すモードの状態
   let hidingMeaning = false; // 意味を隠すモードの状態
 
-  // === 単語一覧 編集モードの切り替え ===
+  /**
+   * 編集モードの切り替え機能
+   * - チェックボックスの表示/非表示
+   * - 編集用UIの表示/非表示
+   */
   $('#edit-mode-toggle').off().on('click', function () {
     editing = !editing; // 編集モードをトグル
     hidingWord = false; // 単語を隠すモードを無効化
@@ -43,7 +54,13 @@ document.addEventListener("turbo:load", function () {
     $('.meaning-text').removeClass('invisible');
   });
 
-  // === 単語カードクリック時の動作 ===
+  /**
+   * 単語カードのクリックイベント処理
+   * - 編集モード: チェックボックスの切り替え
+   * - 単語隠しモード: 単語の表示切り替え
+   * - 意味隠しモード: 意味の表示切り替え
+   * - 通常モード: 詳細ページへ遷移
+   */
   $('.entry-card').off().on('click', function () {
     if (editing) {
       // 編集モード中はチェックボックスの選択を切り替える
@@ -92,7 +109,12 @@ document.addEventListener("turbo:load", function () {
     e.stopPropagation();
   });
 
-  // === 単語を隠すボタンの動作 ===
+  /**
+   * 単語を隠すボタンの機能
+   * - 単語テキストを「クリックして表示」に切り替え
+   * - 意味を隠すモードを解除
+   * - ボタンのスタイルを切り替え
+   */
   $('#toggle-word').off().on('click', function () {
     hidingWord = !hidingWord; // 単語を隠すモードをトグル
     hidingMeaning = false; // 意味を隠すモードを無効化
@@ -125,7 +147,12 @@ document.addEventListener("turbo:load", function () {
     }
   });
 
-  // === 意味を隠すボタンの動作 ===
+  /**
+   * 意味を隠すボタンの機能
+   * - 意味テキストを「クリックして表示」に切り替え
+   * - 単語を隠すモードを解除
+   * - ボタンのスタイルを切り替え
+   */
   $('#toggle-meaning').off().on('click', function () {
     hidingMeaning = !hidingMeaning; // 意味を隠すモードをトグル
     hidingWord = false; // 単語を隠すモードを無効化
@@ -158,7 +185,11 @@ document.addEventListener("turbo:load", function () {
     }
   });
 
-  // === 単語一覧 移動ボタン ===
+  /**
+   * 単語の移動機能
+   * - 選択された単語のIDを取得
+   * - 移動画面へリダイレクト
+   */
   $('#move-button').off().on('click', function () {
     const selectedIds = $('.entry-checkbox:checked').map(function () {
       return $(this).data('entry-id');
@@ -174,7 +205,13 @@ document.addEventListener("turbo:load", function () {
     window.location.href = moveUrl;
   });
 
-  // === 単語一覧 削除ボタン ===
+  /**
+   * 単語の一括削除機能
+   * - 選択された単語のIDを取得
+   * - APIを使用して削除を実行
+   * - 成功時はリダイレクト
+   * - エラー時はアラート表示
+   */
   $('#delete-button').off().on('click', function () {
     const selectedIds = $('.entry-checkbox:checked').map(function () {
       return $(this).data('entry-id');
@@ -208,7 +245,11 @@ document.addEventListener("turbo:load", function () {
     });
   });
 
-  // === 単語帳一覧 編集モード ===
+  /**
+   * 単語帳の編集モード切り替え
+   * - チェックボックスの表示/非表示
+   * - 編集アクションの表示/非表示
+   */
   $('#edit-wordbook-mode').off().on('click', function () {
     const checkboxes = $('.wordbook-checkbox');
     const actions = $('#wordbook-edit-actions');
@@ -276,7 +317,10 @@ document.addEventListener("turbo:load", function () {
     window.location.href = copyUrl;
   });
 
-  // === プロフィール画像のドロップダウン ===
+  /**
+   * UI関連の補助機能
+   */
+  // プロフィール画像のドロップダウンメニュー
   const avatarBtn = document.getElementById("avatar-button");
   const dropdown = document.getElementById("dropdown-menu");
   if (avatarBtn && dropdown) {
@@ -290,7 +334,7 @@ document.addEventListener("turbo:load", function () {
     });
   }
 
-  // === フラッシュメッセージ自動非表示 ===
+  // フラッシュメッセージの自動非表示
   const flash = document.querySelector(".flash-message");
   if (flash) {
     setTimeout(() => {
@@ -303,6 +347,7 @@ document.addEventListener("turbo:load", function () {
   }
 });
 
+// ブラウザのバック時にページをリロード
 window.addEventListener("pageshow", function (event) {
   if (event.persisted) {
     window.location.reload();

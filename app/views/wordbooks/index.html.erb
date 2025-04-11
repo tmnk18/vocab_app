@@ -1,20 +1,27 @@
+<%# ナビゲーションヘッダー - 戻るリンクと操作ボタン %>
 <div class="mb-4 flex justify-between items-center">
+  <%# フォルダ一覧への戻るリンク %>
   <%= link_to "← フォルダ一覧に戻る", folders_path,
               class: "text-sm text-blue-600 hover:underline" %>
 
+  <%# 単語帳の操作ボタン群 %>
   <div class="flex items-center gap-4">
+    <%# 編集モード切り替えボタン %>
     <button id="edit-wordbook-mode" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm">
       編集
     </button>
+    <%# 新規単語帳作成リンク %>
     <%= link_to "新しい単語帳を作成", new_folder_wordbook_path(@folder),
                 class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" %>
   </div>
 </div>
 
+<%# 現在のフォルダ名を表示 %>
 <h2 class="text-xl font-bold mb-4">「<%= @folder.name %>」単語帳一覧</h2>
 
-<!-- 編集モード用操作 -->
+<%# 編集モード時の一括操作ボタン %>
 <div id="wordbook-edit-actions" class="mb-4 hidden flex gap-2">
+  <%# 単語帳移動ボタン - data属性でURL指定 %>
   <button id="wordbook-move-button"
           data-move-url="<%= move_folder_wordbooks_path(@folder) %>"
           class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">
@@ -22,33 +29,39 @@
   </button>
 </div>
 
+<%# 単語帳一覧 %>
 <% if @wordbooks.any? %>
   <ul class="space-y-2">
     <% @wordbooks.each do |wordbook| %>
+      <%# 単語帳カード - クリックで詳細ページへ遷移 %>
       <li class="wordbook-card p-4 bg-white rounded shadow hover:bg-gray-50 flex items-center cursor-pointer"
           data-wordbook-id="<%= wordbook.id %>"
           data-url="<%= folder_wordbook_word_entries_path(@folder, wordbook) %>">
 
-        <!-- チェックボックス -->
+        <%# チェックボックス（編集モード時に表示） %>
         <div class="w-1/12 flex justify-center">
           <input type="checkbox" class="wordbook-checkbox hidden" data-wordbook-id="<%= wordbook.id %>">
         </div>
 
-        <!-- タイトル＋説明 -->
+        <%# 単語帳の基本情報 %>
         <div class="w-8/12">
+          <%# タイトル - リンクで詳細ページへ %>
           <p class="font-semibold text-lg wordbook-title">
             <span class="wordbook-title-link">
               <%= link_to wordbook.title, folder_wordbook_word_entries_path(@folder, wordbook),
                           class: "text-blue-600 hover:underline" %>
             </span>
           </p>
+          <%# 説明文（空の場合はプレースホルダーを表示） %>
           <p class="text-sm text-gray-600"><%= wordbook.description.presence || "（説明なし）" %></p>
         </div>
 
-        <!-- 編集・削除 -->
+        <%# 操作ボタン群 %>
         <div class="w-3/12 text-right wordbook-actions flex justify-end gap-3 text-sm">
+          <%# 編集リンク %>
           <%= link_to "編集", edit_folder_wordbook_path(@folder, wordbook),
                       class: "bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm" %>
+          <%# 削除リンク - 確認ダイアログ付き %>
           <%= link_to "削除", folder_wordbook_path(@folder, wordbook),
                       method: :delete,
                       data: { confirm: "本当に削除しますか？" },
@@ -58,5 +71,6 @@
     <% end %>
   </ul>
 <% else %>
+  <%# 単語帳が存在しない場合のメッセージ %>
   <p>このフォルダにはまだ単語帳がありません。</p>
 <% end %>
